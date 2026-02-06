@@ -1,0 +1,73 @@
+/* Main Page Background */
+.table-page {
+  background: var(--c-bg-tertiary);
+  color: var(--c-text-primary);
+  min-height: 100vh;
+}
+
+.table-page h2, 
+.table-page h6 {
+  color: var(--c-text-primary);
+}
+
+/* Card Background */
+.table-page .card {
+  background: var(--c-bg-secondary);
+  border-color: var(--c-border) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Table Styles */
+.table-page .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--c-text-primary);
+  --bs-table-border-color: var(--c-border);
+  color: var(--c-text-primary);
+}
+
+.table-page .table td, 
+.table-page .table th {
+  border-bottom-color: var(--c-border);
+  background-color: transparent;
+}
+
+.table-page .table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: var(--c-bg-tertiary);
+  color: var(--c-text-primary);
+}
+
+/* Header Styles */
+.table-page .bg-light,
+.table-page .text-bg-light {
+  background: var(--c-bg-secondary) !important;
+  color: var(--c-text-secondary) !important;
+  border-color: var(--c-border) !important;
+}
+
+.table-page .badge.text-bg-light {
+  background: var(--c-bg-secondary) !important;
+  color: var(--c-text-secondary) !important;
+  border: 1px solid var(--c-border) !important;
+}
+
+/* BUY BUTTON - FORCED BLUE */
+.table-page .btn-outline-secondary {
+  background-color: #0d6efd !important; /* Blue Background */
+  border-color: #0d6efd !important;
+  color: #ffffff !important; /* White Text */
+  font-weight: 500;
+}
+
+.table-page .btn-outline-secondary:hover {
+  background-color: #0b5ed7 !important; /* Darker Blue */
+  border-color: #0a58ca !important;
+  color: #ffffff !important;
+}
+
+.table-page .text-end.fw-bold {
+  color: var(--c-text-primary);
+}
+
+.table-page .text-muted {
+  color: var(--c-text-muted) !important;
+}

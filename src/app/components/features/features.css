@@ -1,0 +1,41 @@
+﻿:host {
+	display: block;
+}
+
+section.bg-light {
+	background: var(--c-bg-tertiary) !important;
+	color: var(--c-text-primary);
+}
+
+h2,
+.fw-bold,
+.fw-semibold {
+	color: var(--c-text-secondary);
+}
+
+.text-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.card {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border) !important;
+	box-shadow: var(--shadow-sm);
+}
+
+.border {
+	border-color: var(--c-border) !important;
+}
+
+.rounded-4 {
+	border-radius: var(--radius-card) !important;
+}
+
+.btn-outline-secondary {
+	border-color: var(--c-border) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.btn-outline-secondary:hover {
+	background: var(--c-bg-secondary) !important;
+}

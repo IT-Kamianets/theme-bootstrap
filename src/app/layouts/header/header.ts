@@ -1,0 +1,55 @@
+﻿import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ThemeDensity, ThemeMode, ThemeRadius, ThemeService } from 'wacom';
+
+@Component({
+	selector: 'app-header',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, RouterLinkActive],
+	templateUrl: './header.html',
+	styleUrl: './header.css',
+})
+export class Header {
+	protected readonly theme = inject(ThemeService);
+
+	protected readonly modes: (ThemeMode | string)[] = ['light', 'dark', 'itkp'];
+	protected readonly densities: ThemeDensity[] = ['comfortable', 'compact'];
+	protected readonly radii: ThemeRadius[] = ['rounded', 'square'];
+
+	protected isMenuOpen = false;
+	protected isControlsOpen = false;
+
+	constructor() {
+		this.theme.init();
+	}
+
+	protected setMode(mode: ThemeMode | string) {
+		this.theme.setMode(mode as ThemeMode);
+	}
+
+	protected setDensity(density: ThemeDensity) {
+		this.theme.setDensity(density);
+	}
+
+	protected setRadius(radius: ThemeRadius) {
+		this.theme.setRadius(radius);
+	}
+
+	protected toggleMenu() {
+		this.isMenuOpen = !this.isMenuOpen;
+		if (this.isMenuOpen) {
+			this.isControlsOpen = false;
+		}
+	}
+
+	protected toggleControls() {
+		this.isControlsOpen = !this.isControlsOpen;
+		if (this.isControlsOpen) {
+			this.isMenuOpen = false;
+		}
+	}
+
+	protected closeMenu() {
+		this.isMenuOpen = false;
+	}
+}

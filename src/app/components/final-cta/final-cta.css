@@ -1,0 +1,44 @@
+﻿:host {
+	display: block;
+}
+
+section {
+	background: var(--c-bg-secondary) !important;
+	color: var(--c-text-primary);
+}
+
+h2,
+.fw-bold,
+.fw-semibold {
+	color: var(--c-text-secondary);
+}
+
+.text-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.bg-light {
+	background: var(--c-bg-tertiary) !important;
+}
+
+.border {
+	border-color: var(--c-border) !important;
+}
+
+.rounded-5 {
+	border-radius: calc(var(--radius-card) + 6px) !important;
+}
+
+.btn-dark {
+	background: var(--c-text-secondary) !important;
+	border-color: var(--c-text-secondary) !important;
+}
+
+.btn-outline-secondary {
+	border-color: var(--c-border) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.btn-outline-secondary:hover {
+	background: var(--c-bg-secondary) !important;
+}

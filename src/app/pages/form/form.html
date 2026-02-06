@@ -1,0 +1,50 @@
+<main class="form-page">
+  <div class="container py-5">
+    <h3 class="mb-4 fw-bold">Checkout Form</h3>
+    
+    <div class="row g-5">
+      <div class="col-md-7">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+          <div *ngFor="let field of formFields" class="mb-3">
+            <label class="form-label fw-semibold">{{ field.label }}</label>
+            <input 
+              [type]="field.type" 
+              class="form-control" 
+              [formControlName]="field.key" 
+              [placeholder]="field.placeholder">
+          </div>
+          
+          <button class="btn btn-dark w-100 mt-4 py-2" type="submit" [disabled]="checkoutForm.invalid">
+            Submit Order
+          </button>
+        </form>
+      </div>
+
+      <div class="col-md-5">
+        <div class="card border rounded-4 shadow-sm p-4">
+          <h5 class="fw-bold mb-3">Selected Item</h5>
+          
+          <div *ngIf="selectedProduct">
+            <div class="ratio ratio-16x9 rounded overflow-hidden mb-3 border">
+              <img [src]="selectedProduct.image" [alt]="selectedProduct.title" class="object-fit-cover">
+            </div>
+
+            <p class="fs-5 mb-1 fw-semibold">{{ selectedProduct.title }}</p>
+            
+            <p class="text-muted small mb-3">{{ selectedProduct.description }}</p>
+
+            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+              <span class="badge bg-secondary">{{ selectedProduct.category }}</span>
+              <h3 class="fw-bold text-primary mb-0">${{ selectedProduct.price }}</h3>
+            </div>
+          </div>
+
+          <div *ngIf="!selectedProduct" class="text-muted">
+            <p>No item selected.</p>
+            <a routerLink="/table" class="btn btn-outline-secondary btn-sm w-100">Go to Shop</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

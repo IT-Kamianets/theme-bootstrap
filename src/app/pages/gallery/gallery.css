@@ -1,0 +1,162 @@
+.gallery {
+	background: var(--c-bg-secondary);
+	color: var(--c-text-primary);
+	min-height: 100vh;
+	font-family: var(--ff-base);
+	font-size: var(--fs);
+	letter-spacing: var(--letter-spacing);
+}
+
+.gallery .bg-white {
+	background: var(--c-bg-secondary) !important;
+	color: var(--c-text-primary);
+}
+
+.gallery .bg-light,
+.gallery .bg-body-tertiary {
+	background: var(--c-bg-tertiary) !important;
+}
+
+.gallery h1,
+.gallery h2,
+.gallery h3,
+.gallery .fw-bold,
+.gallery .fw-semibold {
+	color: var(--c-text-secondary);
+}
+
+.gallery .text-secondary,
+.gallery .text-muted,
+.gallery .text-body-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.gallery .card {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border) !important;
+	box-shadow: var(--shadow-sm);
+}
+
+.gallery .border,
+.gallery .border-top,
+.gallery .border-bottom,
+.gallery .border-start,
+.gallery .border-end {
+	border-color: var(--c-border) !important;
+}
+
+.gallery .rounded-4 {
+	border-radius: var(--radius-card) !important;
+}
+
+.gallery .rounded-5 {
+	border-radius: calc(var(--radius-card) + 6px) !important;
+}
+
+.gallery .shadow-sm {
+	box-shadow: var(--shadow-sm) !important;
+}
+
+.gallery .shadow {
+	box-shadow: var(--shadow-md) !important;
+}
+
+.gallery .form-control,
+.gallery .form-select {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border);
+	color: var(--c-text-secondary);
+}
+
+.gallery .form-control::placeholder {
+	color: var(--c-placeholder);
+}
+
+.gallery .btn-outline-secondary {
+	border-color: var(--c-border) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.gallery .btn-outline-secondary:hover {
+	background: var(--c-bg-secondary) !important;
+}
+
+.gallery .btn-dark {
+	background: var(--c-text-secondary) !important;
+	border-color: var(--c-text-secondary) !important;
+}
+
+.gallery .page-link {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border);
+	color: var(--c-text-secondary);
+}
+
+.gallery .page-link:hover {
+	background: var(--c-bg-tertiary);
+	color: var(--c-text-secondary);
+}
+
+.gallery .page-item.active .page-link {
+	background: var(--c-text-secondary);
+	border-color: var(--c-text-secondary);
+	color: var(--c-bg-secondary);
+}
+
+.gallery .text-bg-primary {
+	background: var(--c-primary) !important;
+}
+
+.gallery .text-bg-light {
+	background: var(--c-bg-tertiary) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.gallery a {
+	color: var(--c-text-secondary);
+	text-decoration: none;
+}
+
+.gallery a:hover {
+	color: var(--c-primary);
+	text-decoration: underline;
+}
+
+.gallery a:focus-visible {
+	outline: 0;
+	box-shadow: var(--focus-ring);
+	border-radius: 6px;
+	text-decoration: underline;
+}
+
+.gallery .btn:focus-visible,
+.gallery .form-control:focus,
+.gallery .form-select:focus,
+.gallery .page-link:focus,
+.gallery .list-group-item-action:focus {
+	outline: 0;
+	border-color: var(--c-primary);
+	box-shadow: var(--focus-ring);
+}
+
+html[data-density='compact'] .gallery .container-lg {
+	padding-top: 2.5rem !important;
+	padding-bottom: 2.5rem !important;
+}
+
+html[data-density='compact'] .gallery .gallery-grid {
+	--bs-gutter-x: 1rem;
+	--bs-gutter-y: 1rem;
+}
+
+html[data-density='compact'] .gallery .card-body {
+	padding: 1rem !important;
+}
+
+html[data-density='compact'] .gallery .gallery-filters .card-body {
+	padding: 1rem !important;
+}
+
+html[data-density='compact'] .gallery .pagination {
+	gap: 0.25rem;
+}

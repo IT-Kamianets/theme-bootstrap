@@ -1,0 +1,33 @@
+﻿:host {
+	display: block;
+}
+
+section.bg-light {
+	background: var(--c-bg-tertiary) !important;
+	color: var(--c-text-primary);
+}
+
+h2,
+.fw-bold,
+.fw-semibold {
+	color: var(--c-text-secondary);
+}
+
+.text-secondary,
+.text-body-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.card {
+	background: var(--c-bg-secondary);
+	box-shadow: var(--shadow-sm);
+	border-color: var(--c-border) !important;
+}
+
+.border {
+	border-color: var(--c-border) !important;
+}
+
+.rounded-4 {
+	border-radius: var(--radius-card) !important;
+}

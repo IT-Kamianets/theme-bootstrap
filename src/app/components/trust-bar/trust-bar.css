@@ -1,0 +1,25 @@
+﻿:host {
+	display: block;
+}
+
+section {
+	background: var(--c-bg-secondary) !important;
+	border-color: var(--c-border) !important;
+	color: var(--c-text-primary);
+}
+
+.text-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.border {
+	border-color: var(--c-border) !important;
+}
+
+.bg-body-tertiary {
+	background: var(--c-bg-tertiary) !important;
+}
+
+.rounded-4 {
+	border-radius: var(--radius-card) !important;
+}

@@ -1,0 +1,192 @@
+.content-page {
+	background: var(--c-bg-secondary);
+	color: var(--c-text-primary);
+	min-height: 100vh;
+	font-family: var(--ff-base);
+	font-size: var(--fs);
+	letter-spacing: var(--letter-spacing);
+}
+
+.content-page .bg-white {
+	background: var(--c-bg-secondary) !important;
+	color: var(--c-text-primary);
+}
+
+.content-page .bg-light,
+.content-page .bg-body-tertiary {
+	background: var(--c-bg-tertiary) !important;
+}
+
+.content-page h1,
+.content-page h2,
+.content-page h3,
+.content-page .fw-bold,
+.content-page .fw-semibold {
+	color: var(--c-text-secondary);
+}
+
+.content-page .text-secondary,
+.content-page .text-muted,
+.content-page .text-body-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.content-page .card {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border) !important;
+	box-shadow: var(--shadow-sm);
+}
+
+.content-page .border,
+.content-page .border-top,
+.content-page .border-bottom,
+.content-page .border-start,
+.content-page .border-end {
+	border-color: var(--c-border) !important;
+}
+
+.content-page .rounded-4 {
+	border-radius: var(--radius-card) !important;
+}
+
+.content-page .rounded-5 {
+	border-radius: calc(var(--radius-card) + 6px) !important;
+}
+
+.content-page .shadow-sm {
+	box-shadow: var(--shadow-sm) !important;
+}
+
+.content-page .shadow {
+	box-shadow: var(--shadow-md) !important;
+}
+
+.content-page .form-control,
+.content-page .form-select {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border);
+	color: var(--c-text-secondary);
+}
+
+.content-page .form-control::placeholder {
+	color: var(--c-placeholder);
+}
+
+.content-page .list-group-item {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border);
+}
+
+.content-page .list-group-item.disabled {
+	color: var(--c-text-muted) !important;
+	opacity: 0.8;
+	pointer-events: none;
+}
+
+.content-page .list-group-item-action:hover {
+	background: var(--c-bg-tertiary);
+}
+
+.content-page .content-section {
+	scroll-margin-top: 5rem;
+}
+
+.content-page .alert-info {
+	background: var(--c-bg-tertiary);
+	border-color: var(--c-border);
+	color: var(--c-text-secondary);
+}
+
+.content-page .btn-outline-secondary {
+	border-color: var(--c-border) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.content-page .btn-outline-secondary:hover {
+	background: var(--c-bg-secondary) !important;
+}
+
+.content-page .btn-dark {
+	background: var(--c-text-secondary) !important;
+	border-color: var(--c-text-secondary) !important;
+}
+
+.content-page .page-link {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border);
+	color: var(--c-text-secondary);
+}
+
+.content-page .page-link:hover {
+	background: var(--c-bg-tertiary);
+	color: var(--c-text-secondary);
+}
+
+.content-page .page-item.active .page-link {
+	background: var(--c-text-secondary);
+	border-color: var(--c-text-secondary);
+	color: var(--c-bg-secondary);
+}
+
+.content-page .text-bg-primary {
+	background: var(--c-primary) !important;
+}
+
+.content-page .text-bg-light {
+	background: var(--c-bg-tertiary) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.content-page a {
+	color: var(--c-text-secondary);
+	text-decoration: none;
+}
+
+.content-page a:hover {
+	color: var(--c-primary);
+	text-decoration: underline;
+}
+
+.content-page a:focus-visible {
+	outline: 0;
+	box-shadow: var(--focus-ring);
+	border-radius: 6px;
+	text-decoration: underline;
+}
+
+.content-page .btn:focus-visible,
+.content-page .form-control:focus,
+.content-page .form-select:focus,
+.content-page .page-link:focus,
+.content-page .list-group-item-action:focus {
+	outline: 0;
+	border-color: var(--c-primary);
+	box-shadow: var(--focus-ring);
+}
+
+html[data-density='compact'] .content-page .container-lg {
+	padding-top: 2.5rem !important;
+	padding-bottom: 2.5rem !important;
+}
+
+html[data-density='compact'] .content-page .content-layout {
+	--bs-gutter-x: 1rem;
+	--bs-gutter-y: 1.5rem;
+}
+
+html[data-density='compact'] .content-page .content-body {
+	padding: 1.5rem !important;
+}
+
+html[data-density='compact'] .content-page .content-section {
+	margin-bottom: 1.5rem !important;
+}
+
+html[data-density='compact'] .content-page .content-highlights {
+	--bs-gutter-x: 0.75rem;
+	--bs-gutter-y: 0.75rem;
+}
+
+html[data-density='compact'] .content-page .content-sidebar .card-body {
+	padding: 1rem !important;
+}

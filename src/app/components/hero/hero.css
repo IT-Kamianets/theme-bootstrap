@@ -1,0 +1,72 @@
+﻿.hero__bg {
+	background: linear-gradient(to bottom, var(--c-bg-tertiary), var(--c-bg-secondary));
+	z-index: -1;
+}
+
+.hero__dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: var(--c-primary);
+}
+
+.hero__traffic {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.hero__traffic--red {
+	background: var(--c-secondary);
+}
+.hero__traffic--amber {
+	background: #f7c948;
+}
+.hero__traffic--green {
+	background: #198754;
+}
+
+.hero__glow {
+	inset: -1.5rem;
+	position: absolute;
+	z-index: -1;
+	border-radius: calc(var(--radius-card) + 18px);
+	background: radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0));
+	filter: blur(18px);
+}
+
+.hero .card {
+	background: var(--c-bg-secondary);
+	border-color: var(--c-border) !important;
+	box-shadow: var(--shadow-sm);
+}
+
+.hero .border {
+	border-color: var(--c-border) !important;
+}
+
+.hero .text-secondary,
+.hero .text-body-secondary {
+	color: var(--c-text-muted) !important;
+}
+
+.hero .text-dark,
+.hero .fw-bold,
+.hero .fw-semibold {
+	color: var(--c-text-secondary) !important;
+}
+
+.hero .btn-dark {
+	background: var(--c-text-secondary) !important;
+	border-color: var(--c-text-secondary) !important;
+}
+
+.hero .btn-outline-secondary {
+	border-color: var(--c-border) !important;
+	color: var(--c-text-secondary) !important;
+}
+
+.hero .btn-outline-secondary:hover {
+	background: var(--c-bg-secondary) !important;
+}

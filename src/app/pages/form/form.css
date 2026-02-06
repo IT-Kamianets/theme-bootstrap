@@ -1,0 +1,69 @@
+/* Main Page Background */
+.form-page {
+  background: var(--c-bg-tertiary);
+  color: var(--c-text-primary);
+  min-height: 100vh;
+}
+
+.form-page h3, 
+.form-page h5, 
+.form-page .form-label {
+  color: var(--c-text-secondary);
+}
+
+/* Input Fields */
+.form-page .form-control {
+  background: var(--c-bg-secondary);
+  border-color: var(--c-border);
+  color: var(--c-text-primary);
+}
+
+.form-page .form-control:focus {
+  border-color: #0d6efd; /* Blue focus border */
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  background: var(--c-bg-secondary);
+  color: var(--c-text-primary);
+}
+
+.form-page .form-control::placeholder {
+  color: var(--c-placeholder);
+}
+
+/* Card (Select Item) */
+.form-page .card {
+  background: var(--c-bg-secondary);
+  border-color: var(--c-border) !important;
+}
+
+/* Submit Button - FORCED BLUE */
+.form-page .btn-dark {
+  background-color: #0d6efd !important; /* Specific Blue Color */
+  border-color: #0d6efd !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.form-page .btn-dark:hover {
+  background-color: #0b5ed7 !important; /* Darker Blue on Hover */
+  border-color: #0a58ca !important;
+  opacity: 1;
+}
+
+/* Secondary Buttons */
+.form-page .btn-outline-secondary {
+  border-color: var(--c-border);
+  color: var(--c-text-secondary);
+}
+
+.form-page .btn-outline-secondary:hover {
+  background: var(--c-bg-secondary);
+  color: var(--c-text-primary);
+}
+
+.form-page .text-muted {
+  color: var(--c-text-muted) !important;
+}
+
+.form-page .text-primary {
+  color: #0d6efd !important; /* Blue Text */
+}

@@ -1,0 +1,460 @@
+.profile-page {
+  background-color: var(--c-bg-primary);
+  min-height: 100vh;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: var(--sp-4);
+}
+
+.breadcrumb-item {
+  color: var(--c-text-primary);
+}
+
+.breadcrumb-link {
+  color: var(--c-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--easing);
+}
+
+.breadcrumb-link:hover {
+  color: var(--c-primary-hover);
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--c-text-muted);
+}
+
+/* ITKP theme - золоті акценти */
+html[data-mode='itkp'] .breadcrumb-link {
+  color: var(--c-bg-secondary);
+}
+
+html[data-mode='itkp'] .breadcrumb-link:hover {
+  opacity: 0.8;
+}
+
+/* Product Hero */
+.product-hero {
+  background-color: transparent;
+}
+
+.product-image-container {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background-color: transparent;
+  padding: 0;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+}
+
+/* Темна тема - прибираємо рамку щоб не було темно на темному */
+html[data-mode='dark'] .product-image {
+  border: none;
+}
+
+/* ITKP - ледь помітна рамка */
+html[data-mode='itkp'] .product-image {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Прибираємо badge зовсім - замість нього буде просто категорія текстом */
+.image-badge {
+  display: none;
+}
+
+.badge {
+  display: none;
+}
+
+/* Product Details */
+.product-details {
+  padding: var(--sp-4) 0;
+}
+
+.product-title {
+  color: var(--c-text-secondary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-4);
+  line-height: 1.2;
+  letter-spacing: var(--letter-spacing);
+}
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.rating-stars {
+  color: var(--c-secondary);
+  font-size: 1.25rem;
+}
+
+/* ITKP - золоті зірки */
+html[data-mode='itkp'] .rating-stars {
+  color: var(--c-bg-secondary);
+}
+
+.rating-text {
+  color: var(--c-text-primary);
+  font-weight: 600;
+  font-size: var(--fs);
+}
+
+.price-section {
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  padding: var(--sp-6) 0;
+  margin: var(--sp-5) 0;
+}
+
+.price-current {
+  color: var(--c-primary);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--sp-2);
+}
+
+/* ITKP - темно-синій колір для контрасту з синім фоном */
+html[data-mode='itkp'] .price-current {
+  color: #8b6262 !important;
+}
+
+.price-info {
+  color: var(--c-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.section-title {
+  color: var(--c-text-secondary);
+  font-weight: 600;
+  margin-bottom: var(--sp-4);
+}
+
+.product-description {
+  color: var(--c-text-primary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Action Buttons */
+.action-buttons-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-5) 0;
+}
+
+.btn {
+  border-radius: var(--radius-btn);
+  font-weight: 500;
+  padding: var(--sp-3) var(--sp-5);
+  transition: all var(--motion) var(--easing);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--ff-base);
+  font-size: var(--fs);
+}
+
+.btn-primary {
+  background-color: var(--c-primary);
+  border-color: var(--c-primary);
+  color: var(--c-bg-secondary);
+}
+
+.btn-primary:hover {
+  background-color: var(--c-primary-hover);
+  border-color: var(--c-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:focus {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ITKP - золоті кнопки з темним текстом */
+html[data-mode='itkp'] .btn-primary {
+  background-color: var(--c-bg-secondary);
+  border-color: var(--c-bg-secondary);
+  color: var(--c-text-primary);
+}
+
+html[data-mode='itkp'] .btn-primary:hover {
+  background-color: #e5b735;
+  border-color: #e5b735;
+}
+
+.btn-outline-secondary {
+  border-color: var(--c-secondary);
+  color: var(--c-secondary);
+  background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--c-secondary);
+  border-color: var(--c-secondary);
+  color: var(--c-bg-secondary);
+}
+
+.btn-outline-secondary:focus {
+  box-shadow: 0 0 0 3px rgba(197, 61, 61, 0.35);
+  outline: none;
+}
+
+.btn-outline-primary {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+  background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--c-primary);
+  border-color: var(--c-primary);
+  color: var(--c-bg-secondary);
+}
+
+.btn-outline-primary:focus {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ITKP - outline кнопки золоті */
+html[data-mode='itkp'] .btn-outline-primary {
+  border-color: var(--c-bg-secondary);
+  color: var(--c-text-secondary);
+}
+
+html[data-mode='itkp'] .btn-outline-primary:hover {
+  background-color: var(--c-bg-secondary);
+  border-color: var(--c-bg-secondary);
+  color: var(--c-text-primary);
+}
+
+/* Additional Info */
+.additional-info {
+  border-top: 1px solid var(--c-border);
+  padding-top: var(--sp-6);
+  margin-top: var(--sp-6);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--c-text-primary);
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs);
+}
+
+.info-item i {
+  color: var(--c-primary);
+  font-size: 1.25rem;
+}
+
+/* ITKP - золоті іконки */
+html[data-mode='itkp'] .info-item i {
+  color: var(--c-bg-secondary);
+}
+
+/* Product Details Section */
+.product-details-section {
+  margin-top: var(--sp-8);
+}
+
+.card {
+  background-color: var(--c-bg-secondary);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ITKP - картка на бежевому фоні замість золотого */
+html[data-mode='itkp'] .card {
+  background-color: var(--c-bg-tertiary);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid var(--c-border);
+  padding: var(--sp-4) var(--sp-6);
+}
+
+.nav-tabs {
+  border-bottom: none;
+  gap: var(--sp-4);
+}
+
+.nav-link {
+  color: var(--c-text-muted);
+  border: none;
+  padding: var(--sp-2) var(--sp-4);
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--easing);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.nav-link:hover {
+  color: var(--c-primary);
+  border: none;
+}
+
+.nav-link.active {
+  color: var(--c-primary);
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid var(--c-primary);
+  font-weight: 600;
+}
+
+/* ITKP - золоті активні таби */
+html[data-mode='itkp'] .nav-link:hover {
+  color: var(--c-bg-secondary);
+}
+
+html[data-mode='itkp'] .nav-link.active {
+  color: var(--c-bg-secondary);
+  border-bottom-color: var(--c-bg-secondary);
+}
+
+.card-body {
+  padding: var(--sp-7) var(--sp-6);
+}
+
+.tab-content-section h5 {
+  color: var(--c-text-secondary);
+  font-weight: 600;
+  margin-bottom: var(--sp-4);
+}
+
+.tab-content-section p {
+  color: var(--c-text-primary);
+  line-height: 1.6;
+}
+
+/* Reviews */
+.review-item {
+  padding: var(--sp-4);
+  background-color: var(--c-bg-tertiary);
+  border-radius: var(--radius);
+  margin-bottom: var(--sp-3);
+  border: 1px solid var(--c-border);
+}
+
+/* ITKP - reviews на білому фоні щоб не було жовто на бежевому */
+html[data-mode='itkp'] .review-item {
+  background-color: #ffffff;
+  border-color: var(--c-border);
+}
+
+.review-item strong {
+  color: var(--c-text-secondary);
+}
+
+.rating-stars.small {
+  font-size: 0.9rem;
+}
+
+/* Table */
+.table {
+  color: var(--c-text-primary);
+  border-color: var(--c-border);
+}
+
+.table thead {
+  color: var(--c-text-secondary);
+  font-weight: 600;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: var(--c-bg-tertiary);
+}
+
+/* ITKP - таблиця зі світлими рядками */
+html[data-mode='itkp'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Loading & Error States */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--c-primary);
+}
+
+/* ITKP - золотий спінер */
+html[data-mode='itkp'] .spinner-border {
+  color: var(--c-bg-secondary);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .product-title {
+    font-size: 2rem;
+  }
+  
+  .price-current {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-title {
+    font-size: 1.75rem;
+  }
+  
+  .price-current {
+    font-size: 2rem;
+  }
+  
+  .action-buttons-section {
+    flex-direction: column;
+  }
+  
+  .action-buttons-section .btn {
+    width: 100%;
+  }
+  
+  .product-image-container {
+    margin-bottom: var(--sp-7);
+  }
+  
+  .card-body {
+    padding: var(--sp-6) var(--sp-4);
+  }
+}
+
+@media (max-width: 576px) {
+  .product-title {
+    font-size: 1.5rem;
+  }
+  
+  .price-current {
+    font-size: 1.75rem;
+  }
+  
+  .card-body {
+    padding: var(--sp-5) var(--sp-3);
+  }
+  
+  .card-header {
+    padding: var(--sp-3) var(--sp-4);
+  }
+}

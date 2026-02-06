@@ -1,0 +1,178 @@
+<main class="content-page">
+	<section class="bg-light">
+		<div class="container-lg px-4 py-5 py-lg-6">
+			<div class="row g-4 g-lg-5 content-layout">
+				<div class="col-12 col-lg-8">
+					<header class="mb-4">
+						<p class="text-uppercase small fw-semibold text-secondary mb-2">Content</p>
+						<h1 class="display-6 fw-bold mb-2">Content page</h1>
+						<div class="d-flex flex-wrap align-items-center gap-2 text-secondary small">
+							<span>February 2, 2026</span>
+							<span aria-hidden="true">&middot;</span>
+							<span>6 min read</span>
+							<span class="badge text-bg-primary">Design</span>
+						</div>
+					</header>
+
+					<article class="card border rounded-4 shadow-sm mb-4 content-article">
+						<div class="card-body p-4 p-lg-5 content-body">
+							<p class="lead text-secondary">
+								This page demonstrates a long-form layout with structured sections,
+								supporting content, and a sidebar for quick navigation.
+							</p>
+
+							<section id="overview" class="mb-4 content-section">
+								<h2 class="h5 fw-semibold mb-2">Overview</h2>
+								<p class="text-secondary mb-0">
+									Use this space for a concise summary that sets expectations and
+									introduces the main topic in a friendly, skimmable way.
+								</p>
+							</section>
+
+							<section id="highlights" class="mb-4 content-section">
+								<h2 class="h5 fw-semibold mb-3">Highlights</h2>
+								<div class="row g-3 content-highlights">
+									<div class="col-12 col-md-6">
+										<div class="border rounded-4 p-3 h-100 bg-body-tertiary">
+											<p class="small fw-semibold mb-1">Two-column layout</p>
+											<p class="small text-secondary mb-0">
+												A prominent content area with a complementary sidebar.
+											</p>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="border rounded-4 p-3 h-100 bg-body-tertiary">
+											<p class="small fw-semibold mb-1">Consistent spacing</p>
+											<p class="small text-secondary mb-0">
+												Bootstrap utilities keep rhythm and hierarchy in check.
+											</p>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="border rounded-4 p-3 h-100 bg-body-tertiary">
+											<p class="small fw-semibold mb-1">Reusable UI pieces</p>
+											<p class="small text-secondary mb-0">
+												Cards, badges, and list groups keep content easy to scan.
+											</p>
+										</div>
+									</div>
+								</div>
+							</section>
+
+							<section id="notes" class="content-section">
+								<h2 class="h5 fw-semibold mb-3">Notes</h2>
+								<div class="alert alert-info mb-3">
+									Keep the copy brief and focus on clarity. The alert helps call out
+									important information or guidance.
+								</div>
+								<h3 class="h6 text-uppercase text-secondary fw-semibold mb-2">
+									Checklist
+								</h3>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item px-0 text-secondary">
+										Confirm the CTA actions match the page intent.
+									</li>
+									<li class="list-group-item px-0 text-secondary">
+										Ensure headings follow a logical hierarchy.
+									</li>
+									<li class="list-group-item px-0 text-secondary">
+										Keep the sidebar links aligned with sections.
+									</li>
+								</ul>
+							</section>
+						</div>
+					</article>
+
+					<div class="d-flex flex-wrap gap-2 align-items-center">
+						<button
+							class="btn btn-dark fw-semibold px-4 py-2"
+							type="button"
+							disabled
+							aria-disabled="true"
+						>
+							Primary action
+						</button>
+						<button
+							class="btn btn-outline-secondary fw-semibold px-4 py-2"
+							type="button"
+							disabled
+							aria-disabled="true"
+						>
+							Secondary action
+						</button>
+						<span class="small text-secondary">Actions coming soon.</span>
+					</div>
+				</div>
+
+				<div class="col-12 col-lg-4 content-sidebar">
+					<div class="position-sticky top-3">
+						<div class="card border rounded-4 shadow-sm mb-3">
+							<div class="card-body p-4">
+								<h2 class="h6 text-uppercase text-secondary fw-semibold mb-3">
+									On this page
+								</h2>
+								<div class="list-group list-group-flush">
+									<a
+										class="list-group-item list-group-item-action px-0"
+										href="#overview"
+										(click)="scrollTo($event, 'overview')"
+									>
+										Overview
+									</a>
+									<a
+										class="list-group-item list-group-item-action px-0"
+										href="#highlights"
+										(click)="scrollTo($event, 'highlights')"
+									>
+										Highlights
+									</a>
+									<a
+										class="list-group-item list-group-item-action px-0"
+										href="#notes"
+										(click)="scrollTo($event, 'notes')"
+									>
+										Notes
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="card border rounded-4 shadow-sm">
+							<div class="card-body p-4">
+								<h2 class="h6 text-uppercase text-secondary fw-semibold mb-3">Related</h2>
+								<div class="list-group list-group-flush">
+									<a
+										class="list-group-item list-group-item-action px-0 disabled"
+										href="#"
+										aria-disabled="true"
+										tabindex="-1"
+									>
+										Design principles
+										<span class="badge text-bg-light border ms-2">Coming soon</span>
+									</a>
+									<a
+										class="list-group-item list-group-item-action px-0 disabled"
+										href="#"
+										aria-disabled="true"
+										tabindex="-1"
+									>
+										Content structure
+										<span class="badge text-bg-light border ms-2">Coming soon</span>
+									</a>
+									<a
+										class="list-group-item list-group-item-action px-0 disabled"
+										href="#"
+										aria-disabled="true"
+										tabindex="-1"
+									>
+										Accessibility basics
+										<span class="badge text-bg-light border ms-2">Coming soon</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>

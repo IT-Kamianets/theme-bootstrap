@@ -1,0 +1,177 @@
+<div class="profile-page" *ngIf="product as p">
+  <div class="container py-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a (click)="navigateToList()" class="breadcrumb-link">Products</a>
+        </li>
+        <li class="breadcrumb-item" *ngIf="p.category">
+          <span>{{ p.category }}</span>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ p.title }}</li>
+      </ol>
+    </nav>
+
+    <!-- Product Hero -->
+    <div class="product-hero mb-5">
+      <div class="row g-4">
+
+        <!-- Image -->
+        <div class="col-lg-6">
+          <div class="product-image-container">
+            <img [src]="p.image" [alt]="p.title" class="product-image img-fluid rounded">
+            <div class="image-badge" *ngIf="p.category">
+              <span class="badge bg-primary">{{ p.category }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="col-lg-6">
+          <div class="product-details">
+            <h1 class="product-title">{{ p.title }}</h1>
+
+            <!-- Rating -->
+            <div class="rating-section mb-3" *ngIf="p.rating">
+              <div class="rating-stars">
+                <i class="bi bi-star-fill" *ngFor="let s of getStars(p.rating)"></i>
+                <i class="bi bi-star" *ngFor="let s of getEmptyStars(p.rating)"></i>
+              </div>
+              <span class="rating-text ms-2">{{ p.rating }} / 5.0</span>
+            </div>
+
+            <!-- Price -->
+            <div class="price-section mb-4">
+              <div class="price-current" [style.color]="getPriceColor() || null">${{ p.price.toFixed(2) }}</div>
+              <p class="price-info">Free shipping on orders over $50</p>
+            </div>
+
+            <!-- Description -->
+            <div class="description-section mb-4">
+              <h5 class="section-title">Description</h5>
+              <p class="product-description">{{ p.description }}</p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="action-buttons-section">
+              <button class="btn btn-primary btn-lg me-2 mb-2" (click)="addToCart()">
+                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+              </button>
+              <button class="btn btn-outline-secondary btn-lg mb-2" (click)="toggleFavorite()">
+                <i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+                {{ isFavorite ? 'Favorited' : 'Add to Favorites' }}
+              </button>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="additional-info mt-4">
+              <div class="info-item">
+                <i class="bi bi-truck me-2"></i><span>Fast & Free Delivery</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-arrow-counterclockwise me-2"></i><span>30-Day Returns</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-shield-check me-2"></i><span>2-Year Warranty</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="product-details-section">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 'details'" (click)="activeTab='details'">Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 'specs'" (click)="activeTab='specs'">Specifications</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab='reviews'">Reviews</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Details -->
+          <div *ngIf="activeTab === 'details'" class="tab-content-section">
+            <h5>Product Details</h5>
+            <p>{{ p.description }}</p>
+            <p>This premium product combines quality craftsmanship...</p>
+          </div>
+
+          <!-- Specs -->
+          <div *ngIf="activeTab === 'specs'" class="tab-content-section">
+            <h5>Technical Specifications</h5>
+            <table class="table table-striped">
+              <tbody>
+                <tr><td><strong>Category</strong></td><td>{{ p.category }}</td></tr>
+                <tr><td><strong>Product ID</strong></td><td>#{{ p.id }}</td></tr>
+                <tr><td><strong>Rating</strong></td><td>{{ p.rating }} / 5.0</td></tr>
+                <tr><td><strong>Availability</strong></td><td><span class="badge bg-success">In Stock</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Reviews -->
+          <div *ngIf="activeTab === 'reviews'" class="tab-content-section">
+            <h5>Customer Reviews</h5>
+            <div class="review-item mb-3">
+              <strong class="me-2">John D.</strong>
+              <div class="rating-stars small">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <p class="review-text">Excellent product! Highly recommend.</p>
+            </div>
+
+            <div class="review-item mb-3">
+              <strong class="me-2">Sarah M.</strong>
+              <div class="rating-stars small">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="review-text">Great value for money.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Back -->
+    <div class="text-center mt-5">
+      <button class="btn btn-outline-primary" (click)="navigateToList()">
+        <i class="bi bi-arrow-left me-2"></i>Back to Products
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="container py-5 text-center" *ngIf="!product && !notFound">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-3 loading-text">Loading product details...</p>
+</div>
+
+<!-- Not found -->
+<div class="container py-5 text-center" *ngIf="notFound">
+  <i class="bi bi-exclamation-circle display-1 not-found-icon"></i>
+  <h2 class="mt-3">Product Not Found</h2>
+  <p class="not-found-text">The product you're looking for doesn't exist.</p>
+  <button class="btn btn-primary mt-3" (click)="navigateToList()">Browse All Products</button>
+</div>

@@ -1,0 +1,121 @@
+.list-page {
+  background-color: var(--c-bg-primary);
+  min-height: 100vh;
+}
+
+.page-header {
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: var(--sp-6);
+}
+
+.page-title {
+  color: var(--c-text-secondary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-2);
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  color: var(--c-text-muted) !important;
+}
+
+.filter-controls {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+}
+
+.form-select {
+  background-color: var(--c-bg-secondary);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  color: var(--c-text-primary);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs);
+  transition: all var(--motion) var(--easing);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-select:focus {
+  border-color: var(--c-primary);
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.results-info {
+  color: var(--c-text-primary);
+}
+
+.results-info p {
+  margin: 0;
+  color: var(--c-text-primary);
+}
+
+.results-info strong {
+  color: var(--c-text-secondary);
+  font-weight: 600;
+}
+
+.text-muted {
+  color: var(--c-text-muted) !important;
+}
+
+.empty-state {
+  margin: var(--sp-8) 0;
+}
+
+.empty-state i {
+  color: var(--c-text-muted) !important;
+}
+
+.empty-state h3 {
+  margin-top: var(--sp-4);
+  color: var(--c-text-muted) !important;
+}
+
+.empty-state p {
+  color: var(--c-text-muted) !important;
+}
+
+.btn-primary {
+  background-color: var(--c-primary);
+  border: none;
+  color: #ffffff;
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: var(--radius-btn);
+  font-weight: 500;
+  transition: all var(--motion) var(--easing);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--c-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .filter-controls {
+    margin-top: var(--sp-4);
+  }
+  
+  .form-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+}
