@@ -21,10 +21,20 @@
       <div class="toolbar-left">
 
         <!-- Toggle filters -->
-        <button class="btn-filter-toggle" (click)="toggleFiltersSidebar()">
-          <i class="bi bi-funnel-fill me-2"></i>
-          Фільтри
-        </button>
+     <button 
+  class="btn-filter-toggle toggle-animated"
+  [class.open]="showFiltersSidebar"
+  (click)="toggleFiltersSidebar()">
+
+  <i class="bi toggle-icon" 
+     [ngClass]="showFiltersSidebar ? 'bi-x-lg' : 'bi-funnel-fill'">
+  </i>
+
+  <span class="toggle-text">
+    {{ showFiltersSidebar ? 'Закрити фільтри' : 'Показати фільтри' }}
+  </span>
+
+</button>
 
         <!-- Items found -->
         <div class="results-info">
