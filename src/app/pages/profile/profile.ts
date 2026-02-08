@@ -79,7 +79,7 @@ export class Profile implements OnInit {
   getPriceColor(): string {
   const mode = document.documentElement.getAttribute('data-mode');
   if (mode === 'itkp') {
-    return '#dddddd'; // темно-синій для контрасту
+    return '#17224f'; // темно-синій для контрасту
   }
   return ''; // використовувати CSS
 }

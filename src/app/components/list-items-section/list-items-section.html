@@ -1,1 +1,32 @@
-<p>list-items-section works!</p>
+<section class="list-items-section">
+  <div class="container py-5">
+    
+    <!-- Section Header -->
+    <div class="section-header text-center mb-5">
+      <h2 class="section-title">{{ title }}</h2>
+      <p class="section-subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+    </div>
+
+    <!-- Products Wrapper для обмеження ширини -->
+    <div class="products-wrapper">
+      <div class="row g-4 justify-content-center">
+        <div 
+          class="col-12 col-md-6 col-lg-4" 
+          *ngFor="let product of displayProducts">
+          <app-list-item 
+            [product]="product"
+            (viewProduct)="onViewProduct($event)">
+          </app-list-item>
+        </div>
+      </div>
+    </div>
+
+    <!-- View All Button -->
+    <div class="text-center mt-5" *ngIf="showViewAll">
+      <button class="btn btn-view-all" (click)="navigateToList()">
+        {{ viewAllText }}
+      </button>
+    </div>
+
+  </div>
+</section>

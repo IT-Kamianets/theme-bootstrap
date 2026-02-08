@@ -1,0 +1,129 @@
+.list-items-section {
+  background-color: var(--c-bg-primary); /* Змінено на primary для контрасту */
+  padding: var(--sp-8) 0;
+}
+
+
+
+.section-header {
+  margin-bottom: var(--sp-7);
+}
+
+.section-title {
+  color: var(--c-text-secondary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+  letter-spacing: var(--letter-spacing);
+}
+
+.section-subtitle {
+  color: var(--c-text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+/* Сітка продуктів - обмежуємо максимальну ширину карточок */
+.row {
+  margin: 0 auto;
+  max-width: 1200px; /* Обмежуємо ширину сітки */
+}
+
+.col-12.col-md-6.col-lg-4 {
+  max-width: 380px; /* Максимальна ширина однієї карточки */
+  flex: 0 0 auto;
+}
+
+/* View All Button */
+.btn-view-all {
+  background-color: var(--c-primary);
+  border: none;
+  color: #ffffff;
+  padding: var(--sp-4) var(--sp-8);
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all var(--motion) var(--easing);
+  cursor: pointer;
+  display: inline-block;
+  min-width: 220px;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-view-all:hover {
+  background-color: var(--c-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-view-all:focus {
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ITKP theme */
+html[data-mode='itkp'] .list-items-section {
+  background-color: var(--c-bg-tertiary);
+}
+
+html[data-mode='itkp'] .btn-view-all {
+  background-color: var(--c-bg-tertiary);
+  color: #ffffff;
+}
+
+html[data-mode='itkp'] .btn-view-all:hover {
+  background-color: var(--c-primary-hover);
+}
+
+/* Dark mode */
+html[data-mode='dark'] .list-items-section {
+  background-color: var(--c-bg-primary);
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .row {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .col-12.col-md-6.col-lg-4 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-view-all {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .list-items-section {
+    padding: var(--sp-7) 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .list-items-section {
+    padding: var(--sp-6) 0;
+  }
+}

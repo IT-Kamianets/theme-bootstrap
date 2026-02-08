@@ -1,5 +1,5 @@
 .profile-page {
-  background-color: var(--c-bg-primary);
+  background-color: var(--c-bg-tertiary);
   min-height: 100vh;
 }
 
@@ -132,7 +132,7 @@ html[data-mode='itkp'] .rating-stars {
 
 /* ITKP - темно-синій колір для контрасту з синім фоном */
 html[data-mode='itkp'] .price-current {
-  color: #8b6262 !important;
+  color: #000000 !important;
 }
 
 .price-info {
