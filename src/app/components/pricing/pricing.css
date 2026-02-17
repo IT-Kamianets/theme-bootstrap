@@ -3,7 +3,7 @@
 }
 
 section {
-	background: var(--c-bg-primary) !important;
+	background: var(--c-bg-tertiary) !important;
 	color: var(--c-text-primary);
 }
 
@@ -52,4 +52,12 @@ h2,
 	background: #fff !important;
 	border-color: #fff !important;
 	color: var(--c-text-secondary) !important;
+}
+
+.exception {
+	color: var(--c-text-exeption) !important;
+}
+
+.btn .btn-light a {
+	color: var(--c-text-exeption) !important;
 }

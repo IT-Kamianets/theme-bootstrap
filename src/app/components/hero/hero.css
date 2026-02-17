@@ -70,3 +70,15 @@
 .hero .btn-outline-secondary:hover {
 	background: var(--c-bg-secondary) !important;
 }
+
+.hero .btn-dark{
+	color: var(--c-bg-secondary) !important;
+}
+
+.hero .border {
+	color: var(--c-text-exeption) !important;
+}
+
+.hero .small .note {
+	color: var(--c-text-exeption) !important;
+}

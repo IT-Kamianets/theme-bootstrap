@@ -21,6 +21,7 @@
 	--c-text-secondary: #17224f;
 	--c-text-muted: #8b8d94;
 	--c-placeholder: #313335ab;
+	--c-text-exeption: #c6c6c6;
 
 	/* borders & elevation */
 	--c-border: #eceef5;
@@ -79,6 +80,7 @@ html[data-mode='dark'] {
 	--c-text-secondary: #ffffff;
 	--c-text-muted: #b7b7b7;
 	--c-placeholder: #d3cdcd;
+	--c-text-exeption: #313335;
 
 	/* focus (keeps using primary) */
 	--focus-ring: 0 0 0 3px rgba(37, 110, 255, 0.35);
@@ -100,10 +102,11 @@ html[data-mode='itkp'] {
   /* TEXT */
   --c-text-primary: #2c3e50;     
   --c-text-secondary: #1a252f;   
-  --c-text-muted: #546e7a;       
+  --c-text-muted: #546e7a;    
+  --c-text-exeption: #2c3e50;   /* червоний для помилок */   
   
   /* BORDERS & SHADOWS */
-  --c-border: #90caf9;
+  --c-border: #0700d33d;
   --shadow-sm: 0 2px 5px rgba(1,87,155,0.15);
   --shadow-md: 0 12px 35px rgba(1,87,155,0.2);
   

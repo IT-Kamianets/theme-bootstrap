@@ -3,7 +3,7 @@
 }
 
 section.bg-light {
-	background: var(--c-bg-tertiary) !important;
+	background: var(--c-bg-primary) !important;
 	color: var(--c-text-primary);
 }
 
