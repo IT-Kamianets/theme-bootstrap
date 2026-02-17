@@ -1,326 +1,174 @@
 <div class="list-page">
-  <div class="container-fluid px-4 py-5">
+  <div class="list-layout">
 
-    <!-- HEADER -->
-    <div class="page-header mb-4">
-      <div class="row align-items-center g-3">
-        <div class="col-md-6">
-          <h1 class="page-title">
-            <i class="bi bi-grid-3x3-gap me-2"></i>Каталог товарів
-          </h1>
-          <p class="page-subtitle">Знайдіть ідеальний товар для себе</p>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ⭐ NEW TOOLBAR -->
-    <div class="toolbar mb-4 clean-toolbar">
-
-      <!-- LEFT -->
-      <div class="toolbar-left">
-
-        <!-- Toggle filters -->
-     <button 
-  class="btn-filter-toggle toggle-animated"
-  [class.open]="showFiltersSidebar"
-  (click)="toggleFiltersSidebar()">
-
-  <i class="bi toggle-icon" 
-     [ngClass]="showFiltersSidebar ? 'bi-x-lg' : 'bi-funnel-fill'">
-  </i>
-
-  <span class="toggle-text">
-    {{ showFiltersSidebar ? 'Закрити фільтри' : 'Показати фільтри' }}
-  </span>
-
-</button>
-
-        <!-- Items found -->
-        <div class="results-info">
-          <span>Знайдено <strong>{{ filteredProducts.length }}</strong> товарів</span>
+    <!-- FILTER SIDEBAR -->
+    <aside class="filters-sidebar" [class.collapsed]="!showFiltersSidebar">
+      <div class="filters-inner">
+        <div class="filters-header">
+          <span class="filters-title">
+            <i class="bi bi-funnel me-2"></i>Filters
+          </span>
         </div>
 
+        <!-- SEARCH -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-search me-1"></i>Search</label>
+          <input type="text" class="filter-input"
+            [(ngModel)]="filters.searchQuery"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Search products...">
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- CATEGORY -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-tag me-1"></i>Category</label>
+          <select class="filter-select" [(ngModel)]="filters.category" (change)="onCategoryChange()">
+            <option value="">All categories</option>
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- PRICE -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-cash me-1"></i>Price</label>
+          <div class="price-display">${{ filters.priceMin }} – ${{ filters.priceMax }}</div>
+          <div class="price-range-wrapper">
+            <div class="price-range-track">
+              <div class="price-range-fill"
+                   [style.left.%]="(filters.priceMin / maxPrice) * 100"
+                   [style.width.%]="((filters.priceMax - filters.priceMin) / maxPrice) * 100">
+              </div>
+            </div>
+            <input type="range" class="range-input range-min"
+              [(ngModel)]="filters.priceMin" [min]="minPrice" [max]="maxPrice" step="10"
+              (ngModelChange)="onPriceRangeChange()">
+            <input type="range" class="range-input range-max"
+              [(ngModel)]="filters.priceMax" [min]="minPrice" [max]="maxPrice" step="10"
+              (ngModelChange)="onPriceRangeChange()">
+          </div>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- STOCK -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-box-seam me-1"></i>Availability</label>
+          <label class="filter-checkbox">
+            <input type="checkbox" [(ngModel)]="filters.inStockOnly" (ngModelChange)="onStockFilterChange()">
+            <span class="checkbox-mark"></span>
+            In stock only
+          </label>
+        </div>
+
+        <div class="filter-divider"></div>
+
+        <!-- SORT -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-arrow-down-up me-1"></i>Sort by</label>
+          <select class="filter-select" [(ngModel)]="filters.sortBy" (change)="onSortChange()">
+            <option value="newest">New arrivals</option>
+            <option value="price-asc">Price: low → high</option>
+            <option value="price-desc">Price: high → low</option>
+            <option value="rating">Rating</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+
+        <!-- RESET -->
+        <button class="btn-reset" *ngIf="hasActiveFilters()" (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
+        </button>
+
       </div>
+    </aside>
 
-      <!-- RIGHT -->
-      <div class="toolbar-right">
+    <!-- MAIN CONTENT -->
+    <main class="products-main">
 
-        <!-- GRID / LIST -->
+      <!-- Sidebar toggle — завжди видима, незалежно від стану сайдбару -->
+      <button class="sidebar-toggle" (click)="toggleFiltersSidebar()" [title]="showFiltersSidebar ? 'Hide filters' : 'Show filters'">
+        <i class="bi" [ngClass]="showFiltersSidebar ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
+      </button>
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">product catalogue</h1>
+          <p class="page-subtitle">
+            <strong>{{ filteredProducts.length }}</strong> items found
+          </p>
+        </div>
         <div class="view-mode-toggle">
-
-          <button 
-            class="btn-view-mode" 
-            [class.active]="viewMode.type === 'grid'"
-            (click)="setViewMode('grid')"
-            title="Сітка">
+          <button class="btn-view-mode" [class.active]="viewMode.type === 'grid'" (click)="setViewMode('grid')" title="Grid">
             <i class="bi bi-grid-3x3-gap"></i>
           </button>
-
-          <button 
-            class="btn-view-mode" 
-            [class.active]="viewMode.type === 'list'"
-            (click)="setViewMode('list')"
-            title="Список">
+          <button class="btn-view-mode" [class.active]="viewMode.type === 'list'" (click)="setViewMode('list')" title="List">
             <i class="bi bi-list-ul"></i>
           </button>
-
         </div>
-
       </div>
 
-    </div>
+      <!-- Active chips -->
+      <div class="active-chips" *ngIf="hasActiveFilters()">
+        <span class="chip" *ngIf="filters.category" (click)="filters.category = ''; onCategoryChange()">
+          {{ filters.category }} <i class="bi bi-x"></i>
+        </span>
+        <span class="chip" *ngIf="filters.searchQuery" (click)="filters.searchQuery = ''; onSearchChange()">
+          "{{ filters.searchQuery }}" <i class="bi bi-x"></i>
+        </span>
+        <span class="chip" *ngIf="filters.inStockOnly" (click)="filters.inStockOnly = false; onStockFilterChange()">
+          In stock <i class="bi bi-x"></i>
+        </span>
+        <button class="chip chip-reset" (click)="resetFilters()">
+          <i class="bi bi-x-circle me-1"></i>Clear all
+        </button>
+      </div>
 
-
-
-    <!-- WRAPPER -->
-    <div class="content-wrapper">
-
-      <!-- ⭐ FILTER SIDEBAR (FULL) -->
-      <aside 
-        class="filters-sidebar"
-        [class.show]="showMobileFilters"
-        [class.hidden]="!showFiltersSidebar">
-
-        <div class="filters-card">
-
-          <!-- SIDEBAR HEADER -->
-          <div class="filters-header">
-            <h5 class="filters-title">
-              <i class="bi bi-funnel me-2"></i>Фільтри
-            </h5>
-
-            <!-- Close on mobile -->
-            <button class="btn-close-filters" (click)="toggleMobileFilters()">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
-
-
-          <!-- SIDEBAR CONTENT -->
-          <div class="filters-body">
-
-
-
-            <!-- SEARCH -->
-            <div class="filter-group">
-              <label class="filter-label">
-                <i class="bi bi-search me-2"></i>Пошук
-              </label>
-
-              <input 
-                type="text"
-                class="form-control search-input"
-                [(ngModel)]="filters.searchQuery"
-                (ngModelChange)="onSearchChange()"
-                placeholder="Пошук товарів...">
-            </div>
-
-
-
-            <!-- CATEGORY -->
-            <div class="filter-group">
-              <label class="filter-label">
-                <i class="bi bi-tag me-2"></i>Категорія
-              </label>
-
-              <select 
-                class="form-select" 
-                [(ngModel)]="filters.category" 
-                (change)="onCategoryChange()">
-
-                <option value="">Всі категорії</option>
-                <option *ngFor="let category of categories" 
-                        [value]="category">
-                  {{ category }}
-                </option>
-
-              </select>
-            </div>
-
-
-
-            <!-- PRICE -->
-            <div class="filter-group">
-              <label class="filter-label">
-                <i class="bi bi-cash me-2"></i>Ціна
-              </label>
-
-              <div class="price-display">
-                ${{ filters.priceMin }} – ${{ filters.priceMax }}
-              </div>
-
-              <div class="price-range-wrapper">
-
-                <div class="price-range-track"></div>
-
-                <div class="price-range-fill" 
-                     [style.left.%]="(filters.priceMin / maxPrice) * 100"
-                     [style.right.%]="100 - (filters.priceMax / maxPrice) * 100">
-                </div>
-
-                <input 
-                  type="range"
-                  class="form-range price-range-min"
-                  [(ngModel)]="filters.priceMin"
-                  [min]="minPrice"
-                  [max]="maxPrice"
-                  step="10"
-                  (ngModelChange)="onPriceRangeChange()">
-
-                <input 
-                  type="range"
-                  class="form-range price-range-max"
-                  [(ngModel)]="filters.priceMax"
-                  [min]="minPrice"
-                  [max]="maxPrice"
-                  step="10"
-                  (ngModelChange)="onPriceRangeChange()">
-
-              </div>
-            </div>
-
-
-
-            <!-- STOCK -->
-            <div class="filter-group">
-              <label class="filter-label">
-                <i class="bi bi-box-seam me-2"></i>Наявність
-              </label>
-
-              <div class="form-check">
-                <input 
-                  class="form-check-input" 
-                  type="checkbox"
-                  [(ngModel)]="filters.inStockOnly"
-                  (ngModelChange)="onStockFilterChange()">
-
-                <label class="form-check-label">
-                  Тільки в наявності
-                </label>
-              </div>
-            </div>
-
-
-
-            <!-- SORTING -->
-            <div class="filter-group">
-              <label class="filter-label">
-                <i class="bi bi-arrow-down-up me-2"></i>Сортування
-              </label>
-
-              <select 
-                class="form-select"
-                [(ngModel)]="filters.sortBy"
-                (change)="onSortChange()">
-
-                <option value="newest">Новинки</option>
-                <option value="price-asc">Ціна: низька → висока</option>
-                <option value="price-desc">Ціна: висока → низька</option>
-                <option value="rating">Рейтинг</option>
-                <option value="name">Назва А-Я</option>
-
-              </select>
-            </div>
-
-
-
-            <!-- RESET -->
-            <button 
-              class="btn btn-reset-all"
-              *ngIf="hasActiveFilters()"
-              (click)="resetFilters()">
-              <i class="bi bi-arrow-counterclockwise me-2"></i>
-              Скинути всі фільтри
-            </button>
-
-
-
+      <!-- Products grid -->
+      <div class="products-container" *ngIf="displayedProducts.length > 0">
+        <div class="products-grid" [class.list-view]="viewMode.type === 'list'">
+          <div *ngFor="let product of displayedProducts">
+            <app-list-item [product]="product" [viewMode]="viewMode.type"
+              (viewProduct)="onViewProduct($event)"
+              (quickAddToCart)="onQuickAddToCart(product)">
+            </app-list-item>
           </div>
         </div>
-      </aside>
+      </div>
 
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="displayedProducts.length === 0">
+        <i class="bi bi-inbox empty-icon"></i>
+        <h3 class="empty-title">Nothing found</h3>
+        <p class="empty-text">Try adjusting your filters</p>
+        <button class="btn-primary-action" (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
+        </button>
+      </div>
 
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="totalPages > 1">
+        <nav>
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="previousPage()"><i class="bi bi-chevron-left"></i></a>
+            </li>
+            <li *ngFor="let page of getPageNumbers()" class="page-item" [class.active]="page === currentPage">
+              <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
-
-      <!-- ⭐ PRODUCTS -->
-      <main class="products-main">
-
-        <div class="products-container" *ngIf="displayedProducts.length > 0">
-
-          <div class="products-grid" [class.list-view]="viewMode.type === 'list'">
-
-            <div *ngFor="let product of displayedProducts">
-              <app-list-item 
-                [product]="product"
-                [viewMode]="viewMode.type"
-                (viewProduct)="onViewProduct($event)"
-                (quickAddToCart)="onQuickAddToCart(product)">
-              </app-list-item>
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- EMPTY -->
-        <div class="empty-state" *ngIf="displayedProducts.length === 0">
-          <i class="bi bi-inbox empty-icon"></i>
-          <h3 class="empty-title">Нічого не знайдено</h3>
-          <p class="empty-text">Спробуйте змінити фільтри</p>
-
-          <button class="btn btn-primary mt-3" (click)="resetFilters()">
-            <i class="bi bi-arrow-counterclockwise me-2"></i>
-            Скинути фільтри
-          </button>
-        </div>
-
-
-
-        <!-- PAGINATION -->
-        <div class="pagination-container" *ngIf="totalPages > 1">
-          <nav aria-label="Навігація по сторінках">
-            <ul class="pagination">
-
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="previousPage()">
-                  <i class="bi bi-chevron-left"></i>
-                </a>
-              </li>
-
-              <li 
-                *ngFor="let page of getPageNumbers()" 
-                class="page-item"
-                [class.active]="page === currentPage">
-                <a class="page-link" (click)="goToPage(page)">
-                  {{ page }}
-                </a>
-              </li>
-
-              <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <a class="page-link" (click)="nextPage()">
-                  <i class="bi bi-chevron-right"></i>
-                </a>
-              </li>
-
-            </ul>
-          </nav>
-        </div>
-
-      </main>
-
-
-    </div><!-- /wrapper -->
-
-
+    </main>
   </div>
 </div>
 
-
-<!-- MOBILE OVERLAY -->
-<div class="mobile-filter-overlay" 
-     *ngIf="showMobileFilters" 
-     (click)="toggleMobileFilters()">
-</div>
+<div class="mobile-filter-overlay" *ngIf="showMobileFilters" (click)="toggleMobileFilters()"></div>

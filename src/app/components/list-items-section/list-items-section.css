@@ -1,5 +1,5 @@
 .list-items-section {
-  background-color: var(--c-bg-primary); /* Змінено на primary для контрасту */
+  background-color: var(--c-bg-tertiary);
   padding: var(--sp-8) 0;
 }
 
@@ -11,7 +11,7 @@
 
 .section-title {
   color: var(--c-text-secondary);
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
   margin-bottom: var(--sp-3);
   letter-spacing: var(--letter-spacing);
@@ -63,7 +63,7 @@
 
 /* ITKP theme */
 html[data-mode='itkp'] .list-items-section {
-  background-color: var(--c-bg-tertiary);
+  background-color: #fffde7; /* ледь жовтий — акцент itkp */
 }
 
 html[data-mode='itkp'] .btn-view-all {

@@ -87,15 +87,15 @@ html[data-mode='dark'] {
 /* ITKP = city brand colors */
 html[data-mode='itkp'] {
   /* SURFACES */
-  --c-bg-primary: #fff59d;      
-  --c-bg-secondary: #e3f2fd;    /* світло-блакитний */
-  --c-bg-tertiary: #a7c7e7;     
+  --c-bg-primary: #e3f2fd;      /* світло-блакитний */
+  --c-bg-secondary: #a7c7e7;    /* синій */
+  --c-bg-tertiary: #fffde7;     /* ледь жовтий */
   
   /* ACCENTS */
-  --c-primary: #01579b;          /* глибокий синій */
-  --c-primary-hover: #004d84;
-  --c-secondary: #ffca28;        /* золотий жовтий */
-  --c-secondary-hover: #ffb300;
+  --c-primary: #d4962a;          /* приглушений золотий */
+  --c-primary-hover: #b87d20;
+  --c-secondary: #01579b;        /* синій */
+  --c-secondary-hover: #004d84;
   
   /* TEXT */
   --c-text-primary: #2c3e50;     
@@ -103,12 +103,12 @@ html[data-mode='itkp'] {
   --c-text-muted: #546e7a;       
   
   /* BORDERS & SHADOWS */
-  --c-border: #64b5f6;
-  --shadow-sm: 0 2px 5px rgba(1,87,155,0.25);
-  --shadow-md: 0 12px 35px rgba(1,87,155,0.3);
+  --c-border: #90caf9;
+  --shadow-sm: 0 2px 5px rgba(1,87,155,0.15);
+  --shadow-md: 0 12px 35px rgba(1,87,155,0.2);
   
   /* FOCUS RING */
-  --focus-ring: 0 0 0 4px rgba(255,202,40,0.6);
+  --focus-ring: 0 0 0 4px rgba(249,168,37,0.5);
 }
 
 

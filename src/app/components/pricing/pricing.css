@@ -3,7 +3,7 @@
 }
 
 section {
-	background: var(--c-bg-secondary) !important;
+	background: var(--c-bg-primary) !important;
 	color: var(--c-text-primary);
 }
 

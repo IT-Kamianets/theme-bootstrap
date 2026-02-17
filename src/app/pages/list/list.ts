@@ -106,8 +106,6 @@ export class List implements OnInit {
   applyFilters(): void {
     let result = [...this.products];
 
-    this.filters.category = this.selectedCategory;
-
     if (this.filters.category) {
       result = result.filter(p => p.category === this.filters.category);
     }
@@ -277,5 +275,14 @@ export class List implements OnInit {
       this.filters.priceMax !== this.maxPrice ||
       this.filters.inStockOnly
     );
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.filters.category) count++;
+    if (this.filters.searchQuery) count++;
+    if (this.filters.priceMin !== this.minPrice || this.filters.priceMax !== this.maxPrice) count++;
+    if (this.filters.inStockOnly) count++;
+    return count;
   }
 }
