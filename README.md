@@ -1,59 +1,271 @@
-# ThemeBootstrap
+# IT Kamianets Website Bootstrap Theme
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+Official Angular theme template for public-facing projects inside the IT Kamianets GitHub organization.
 
-## Development server
+This repository serves as a standardized foundation for landing pages, informational websites, and community platforms. It ensures consistent styling, domain configuration, structure, and contribution workflow across all projects.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+# 🌐 Domain Configuration (CNAME)
+
+This repository includes a `CNAME` file for GitHub Pages deployment.
+
+When using this template:
+
+1. Open the `CNAME` file
+2. Replace the domain with the new project domain
+
+Example:
+
+```
+voltlab.itkamianets.com
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+If not updated, GitHub Pages will continue pointing to the previous project domain.
 
-## Code scaffolding
+Always verify:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Repository → Settings → Pages
+- Custom domain matches `CNAME`
+- SSL is enabled
 
-```bash
-ng generate component component-name
+---
+
+# 🎨 Styling & Theme Configuration
+
+Global theme configuration is located in:
+
+```
+src/styles.scss
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Before launching a new project, review and adjust:
 
-```bash
-ng generate --help
+### Brand Colors
+
+- `--c-primary`
+- `--c-primary-hover`
+- `--c-secondary`
+- `--c-secondary-hover`
+
+### Background Colors
+
+- `--c-bg-primary`
+- `--c-bg-secondary`
+- `--c-bg-tertiary`
+
+### Text Colors
+
+- `--c-text-primary`
+- `--c-text-secondary`
+- `--c-text-muted`
+- `--c-placeholder`
+
+### Borders & Elevation
+
+- `--c-border`
+- `--shadow-sm`
+- `--shadow-md`
+- `--shadow-lg`
+
+All UI components must rely strictly on CSS variables. Hardcoded colors are not allowed.
+
+---
+
+# 📄 Core Pages (7 Standard Pages)
+
+Every project built from this theme contains the following foundational pages.
+
+---
+
+## 1. Home Page
+
+Purpose:
+
+- Project introduction
+- Value proposition
+- CTA blocks
+- Highlight key features
+
+Used for:
+
+- SEO entry point
+- Social sharing
+- Brand positioning
+
+---
+
+## 2. About Page
+
+Purpose:
+
+- Describe the organization or project mission
+- Present background, values, vision
+- Explain ecosystem integration (if applicable)
+
+Used for:
+
+- Credibility
+- Transparency
+- Partner introduction
+
+---
+
+## 3. Projects Page
+
+Purpose:
+
+- Showcase active initiatives
+- List products, tools, or platforms
+- Provide navigation to sub-projects
+
+Used for:
+
+- Ecosystem visibility
+- Traffic distribution
+
+---
+
+## 4. Community Page
+
+Purpose:
+
+- Present community initiatives
+- Events, collaboration, partnerships
+- Call to action for joining
+
+Used for:
+
+- Developer onboarding
+- Student engagement
+- Local ecosystem growth
+
+---
+
+## 5. News / Articles Page
+
+Purpose:
+
+- Publish updates
+- Share announcements
+- Document progress
+
+Used for:
+
+- SEO growth
+- Activity signals
+- Public transparency
+
+---
+
+## 6. Contact Page
+
+Purpose:
+
+- Provide official communication channels
+- Display email, social links, location
+- Allow partnership inquiries
+
+Used for:
+
+- Lead generation
+- Business communication
+
+---
+
+## 7. Legal / Policy Page
+
+Purpose:
+
+- Terms of service
+- Privacy policy
+- Data handling transparency
+
+Used for:
+
+- Compliance
+- Trust building
+- Public clarity
+
+---
+
+# 📁 Project Structure Overview
+
+```
+src/
+  app/
+    pages/
+    components/
+  styles.scss
+CNAME
+CONTRIBUTING.md
 ```
 
-## Building
+- `pages/` → main 7 pages
+- `components/` → reusable UI elements
+- `styles.scss` → global design tokens
+- `CNAME` → production domain
+- `CONTRIBUTING.md` → contribution workflow
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+# 🤝 Contribution Rules
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+All contributors must strictly follow `CONTRIBUTING.md`.
 
-## Running unit tests
+This applies to:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- Developers
+- External contributors
+- AI tools
 
-```bash
-ng test
-```
+Core principles:
 
-## Running end-to-end tests
+- Use Conventional Commits
+- One logical change per commit
+- Proper branch naming
+- No direct commits to `master`
+- PR must reference an issue
 
-For end-to-end (e2e) testing, run:
+Before starting work:
 
-```bash
-ng e2e
-```
+1. Create a branch
+2. Follow naming convention
+3. Link GitHub issue
+4. Keep commits clean and focused
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+# 🤖 AI Usage Policy
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+When using AI tools:
+
+- Always provide `CONTRIBUTING.md`
+- Enforce commit format
+- Enforce branch naming rules
+- Review generated code manually
+- Do not allow uncontrolled structural changes
+
+AI assists development — it does not define architecture.
+
+---
+
+# 🚀 Deployment
+
+Deployment is managed via:
+
+- GitHub Pages
+- `CNAME` domain configuration
+- Optional GitHub Actions workflow
+
+After pushing to `master`:
+
+- Verify Pages build status
+- Confirm correct domain resolution
+- Check SSL certificate
+
+---
+
+# 📜 License
+
+MIT License
