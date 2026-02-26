@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 // Імпортуємо масив даних
@@ -8,6 +8,7 @@ import { Product } from '../../models/Product.model';
 
 @Component({
   selector: 'app-table',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule],
   templateUrl: './table.html',

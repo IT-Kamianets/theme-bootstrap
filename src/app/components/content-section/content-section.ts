@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-content-section',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './content-section.html',
   styleUrl: './content-section.css',

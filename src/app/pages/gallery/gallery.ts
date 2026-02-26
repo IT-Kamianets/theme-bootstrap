@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ type GalleryItem = {
 
 @Component({
 	selector: 'app-gallery',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgFor, NgIf, RouterLink, FormsModule],
 	templateUrl: './gallery.html',
 	styleUrl: './gallery.css',

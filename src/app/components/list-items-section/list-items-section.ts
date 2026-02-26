@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/Product.model';
@@ -7,6 +7,7 @@ import { PRODUCTS } from '../../data/products';
 
 @Component({
   selector: 'app-list-items-section',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, ListItem],
   templateUrl: './list-items-section.html',
