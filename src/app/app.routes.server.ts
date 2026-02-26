@@ -1,4 +1,4 @@
-// src/app/app.routes.server.ts
+﻿// src/app/app.routes.server.ts
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
@@ -16,3 +16,7 @@ export const serverRoutes: ServerRoute[] = [
 	// fallback must be SSR (otherwise it tries to prerender everything)
 	{ path: '**', renderMode: RenderMode.Server },
 ];
+
+
+
+

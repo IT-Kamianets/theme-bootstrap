@@ -1,4 +1,4 @@
-// data/products.ts
+﻿// data/products.ts
 import { Product } from '../models/Product.model';
 
 export const PRODUCTS: Product[] = [
@@ -42,7 +42,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 16,
-    title: 'Smart Home Security Camera',
+    title: 'Smart HomeComponent Security Camera',
     description: '1080p HD camera with night vision, motion detection, and two-way audio.',
     price: 65.99,
     category: 'Electronics',
@@ -64,7 +64,7 @@ export const PRODUCTS: Product[] = [
     title: 'Designer Table Lamp',
     description: 'Minimalist wooden base lamp with warm LED bulb for a cozy atmosphere.',
     price: 45.50,
-    category: 'Home & Kitchen',
+    category: 'HomeComponent & Kitchen',
     image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
     rating: 4.6,
     stock: 30,
@@ -121,7 +121,7 @@ export const PRODUCTS: Product[] = [
     title: 'Double-Wall Espresso Glasses',
     description: 'Set of 2 insulated glasses that keep coffee hot while remaining cool to the touch.',
     price: 24.99,
-    category: 'Home & Kitchen',
+    category: 'HomeComponent & Kitchen',
     image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80',
     rating: 4.7,
     stock: 100,
@@ -159,7 +159,7 @@ export const PRODUCTS: Product[] = [
     title: 'Minimalist Coffee Grinder',
     description: 'Manual ceramic burr grinder with adjustable settings for the perfect grind consistency.',
     price: 35.00,
-    category: 'Home & Kitchen',
+    category: 'HomeComponent & Kitchen',
     image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80',
     rating: 4.6,
     stock: 42,
@@ -216,7 +216,7 @@ export const PRODUCTS: Product[] = [
     title: 'Electric Milk Frother',
     description: 'Handheld battery-operated frother for lattes, cappuccinos, and hot chocolates.',
     price: 12.99,
-    category: 'Home & Kitchen',
+    category: 'HomeComponent & Kitchen',
     image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80',
     rating: 4.5,
     stock: 120,
@@ -244,7 +244,7 @@ export const PRODUCTS: Product[] = [
     discount: 10,
     isNew: true,
     images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80'],
-    specifications: { 'Modes': '4 Lighting Modes', 'App': 'iOS/Android', 'CRI': '>90' },
+    specifications: { 'Modes': '4 Lighting Modes', 'AppComponent': 'iOS/Android', 'CRI': '>90' },
     reviews: [],
     relatedProductIds: [17, 25, 30],
     tags: ['lighting', 'smart-home', 'office']
@@ -402,3 +402,6 @@ export const PRODUCTS: Product[] = [
     tags: ['recovery', 'fitness', 'massage']
   }
 ];
+
+
+

@@ -1,4 +1,4 @@
-export interface FormFieldConfig {
+﻿export interface FormFieldConfig {
 	key: string;
 	label: string;
 	type: 'text' | 'number' | 'email';
@@ -14,3 +14,7 @@ export interface CheckoutData {
 	zip: string;
 	paymentMethod: string;
 }
+
+
+
+

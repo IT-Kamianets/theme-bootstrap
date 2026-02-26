@@ -1,26 +1,26 @@
-import { Routes } from '@angular/router';
-import { Public } from './layouts/public/public';
-import { Content } from './pages/content/content';
-import { FormPage } from './pages/form/form';
-import { Gallery } from './pages/gallery/gallery';
-import { Home } from './pages/home/home'; // Verify your exact path/filename
-import { List } from './pages/list/list';
-import { TablePage } from './pages/table/table';
+﻿import { Routes } from '@angular/router';
+import { PublicComponent } from './layouts/public/public.component';
+import { ContentComponent } from './pages/content/content.component';
+import { FormPageComponent } from './pages/form/form.component';
+import { GalleryComponent } from './pages/gallery/gallery.component';
+import { HomeComponent } from './pages/home/home.component'; // Verify your exact path/filename
+import { ListComponent } from './pages/list/list.component';
+import { TablePageComponent } from './pages/table/table.component';
 
 export const routes: Routes = [
 	{
 		path: '',
-		component: Public,
+		component: PublicComponent,
 		children: [
-			{ path: '', component: Home },
-			{ path: 'list', component: List },
-			{ path: 'gallery', component: Gallery },
-			{ path: 'content', component: Content },
-			{ path: 'form', component: FormPage },
-			{ path: 'table', component: TablePage },
+			{ path: '', component: HomeComponent },
+			{ path: 'list', component: ListComponent },
+			{ path: 'gallery', component: GalleryComponent },
+			{ path: 'content', component: ContentComponent },
+			{ path: 'form', component: FormPageComponent },
+			{ path: 'table', component: TablePageComponent },
 			{
 				path: 'profile/:id',
-				loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
+				loadComponent: () => import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
 			},
 			{ path: 'profile', redirectTo: 'profile/1', pathMatch: 'full' },
 		],
@@ -30,3 +30,7 @@ export const routes: Routes = [
 		redirectTo: '',
 	},
 ];
+
+
+
+
