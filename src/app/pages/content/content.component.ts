@@ -23,8 +23,3 @@ export class ContentComponent {
 		target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 }
-
-
-
-
-

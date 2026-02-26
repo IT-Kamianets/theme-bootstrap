@@ -16,10 +16,3 @@ export class AppComponent {
 		this._themeService.init();
 	}
 }
-
-
-
-
-
-
-

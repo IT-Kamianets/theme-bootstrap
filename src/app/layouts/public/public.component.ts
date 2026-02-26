@@ -11,8 +11,3 @@ import { HeaderComponent } from '../header/header.component';
 	styleUrl: './public.component.css',
 })
 export class PublicComponent {}
-
-
-
-
-

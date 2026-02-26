@@ -11,7 +11,3 @@ import { RouterLink } from '@angular/router';
 export class FooterComponent {
 	protected readonly year = new Date().getFullYear();
 }
-
-
-
-

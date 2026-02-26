@@ -14,7 +14,3 @@ export interface CheckoutData {
 	zip: string;
 	paymentMethod: string;
 }
-
-
-
-

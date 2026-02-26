@@ -1,92 +1,98 @@
-<div class="product-card" 
-     [class.list-view]="viewMode === 'list'"
-     [class.out-of-stock]="!isInStock()"
-     (click)="onView()"
-     (mouseenter)="isHovered = true"
-     (mouseleave)="isHovered = false">
-  
-  <!-- Image Container -->
-  <div class="product-image-container">
-    <img [src]="product.image" [alt]="product.title" class="product-image">
-    
-    <!-- Badges -->
-    <div class="product-badges">
-      <span class="badge badge-new" *ngIf="product.isNew">Новинка</span>
-      <span class="badge badge-discount" *ngIf="hasDiscount()">-{{ product.discount }}%</span>
-      <span class="badge badge-out" *ngIf="!isInStock()">Немає</span>
-    </div>
-    
-    <!-- Quick Actions -->
-    <div class="quick-actions" [class.show]="isHovered">
-      <button class="btn-quick-action btn-favorite" 
-              [class.active]="isFavorite"
-              (click)="toggleFavorite($event)"
-              [title]="isFavorite ? 'Видалити з улюблених' : 'Додати в улюблені'">
-        <i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
-      </button>
-      <button class="btn-quick-action btn-quick-view" 
-              (click)="onView()"
-              title="Швидкий перегляд">
-        <i class="bi bi-eye"></i>
-      </button>
-    </div>
-  </div>
-  
-  <!-- Product Info -->
-  <div class="product-info">
-    
-    <!-- Category & Brand -->
-    <div class="product-meta" *ngIf="product.category || product.brand">
-      <span class="category" *ngIf="product.category">{{ product.category }}</span>
-      <span class="brand" *ngIf="product.brand">{{ product.brand }}</span>
-    </div>
-    
-    <!-- Title -->
-    <h5 class="product-title" [title]="product.title">{{ product.title }}</h5>
-    
-    <!-- Description (только в list view) -->
-    <p class="product-description" *ngIf="viewMode === 'list'">
-      {{ product.description }}
-    </p>
-    
-    <!-- Rating -->
-    <div class="product-rating" *ngIf="product.rating">
-      <div class="rating-stars">
-        <i class="bi bi-star-fill" *ngFor="let s of getStars(product.rating)"></i>
-        <i class="bi bi-star" *ngFor="let s of getEmptyStars(product.rating)"></i>
-      </div>
-      <span class="rating-value">{{ product.rating }}</span>
-      <span class="reviews-count" *ngIf="product.reviews">({{ product.reviews.length }})</span>
-    </div>
-    
-    <!-- Price & Stock -->
-    <div class="product-footer">
-      <div class="price-container">
-        <div class="price-row" *ngIf="!hasDiscount()">
-          <span class="price-current">${{ product.price.toFixed(2) }}</span>
-        </div>
-        <div class="price-row" *ngIf="hasDiscount()">
-          <span class="price-old">${{ product.price.toFixed(2) }}</span>
-          <span class="price-discounted">${{ getDiscountedPrice().toFixed(2) }}</span>
-        </div>
-        <div class="stock-status" [ngClass]="getStockClass()">
-          <i class="bi" [ngClass]="{
-            'bi-check-circle': isInStock() && product.stock >= 10,
-            'bi-exclamation-circle': product.stock < 10 && product.stock > 0,
-            'bi-x-circle': !isInStock()
-          }"></i>
-          <span>{{ getStockStatus() }}</span>
-        </div>
-      </div>
-      
-      <!-- Add to Cart Button -->
-      <button class="btn btn-add-cart" 
-              (click)="onQuickAdd($event)"
-              [disabled]="!isInStock()">
-        <i class="bi bi-cart-plus"></i>
-        <span *ngIf="viewMode === 'list'">Додати в кошик</span>
-      </button>
-    </div>
-    
-  </div>
+<div
+	class="product-card"
+	[class.list-view]="viewMode === 'list'"
+	[class.out-of-stock]="!isInStock()"
+	(click)="onView()"
+	(mouseenter)="isHovered = true"
+	(mouseleave)="isHovered = false"
+>
+	<!-- Image Container -->
+	<div class="product-image-container">
+		<img [src]="product.image" [alt]="product.title" class="product-image" />
+
+		<!-- Badges -->
+		<div class="product-badges">
+			<span class="badge badge-new" *ngIf="product.isNew">Новинка</span>
+			<span class="badge badge-discount" *ngIf="hasDiscount()">-{{ product.discount }}%</span>
+			<span class="badge badge-out" *ngIf="!isInStock()">Немає</span>
+		</div>
+
+		<!-- Quick Actions -->
+		<div class="quick-actions" [class.show]="isHovered">
+			<button
+				class="btn-quick-action btn-favorite"
+				[class.active]="isFavorite"
+				(click)="toggleFavorite($event)"
+				[title]="isFavorite ? 'Видалити з улюблених' : 'Додати в улюблені'"
+			>
+				<i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+			</button>
+			<button
+				class="btn-quick-action btn-quick-view"
+				(click)="onView()"
+				title="Швидкий перегляд"
+			>
+				<i class="bi bi-eye"></i>
+			</button>
+		</div>
+	</div>
+
+	<!-- Product Info -->
+	<div class="product-info">
+		<!-- Category & Brand -->
+		<div class="product-meta" *ngIf="product.category || product.brand">
+			<span class="category" *ngIf="product.category">{{ product.category }}</span>
+			<span class="brand" *ngIf="product.brand">{{ product.brand }}</span>
+		</div>
+
+		<!-- Title -->
+		<h5 class="product-title" [title]="product.title">{{ product.title }}</h5>
+
+		<!-- Description (только в list view) -->
+		<p class="product-description" *ngIf="viewMode === 'list'">
+			{{ product.description }}
+		</p>
+
+		<!-- Rating -->
+		<div class="product-rating" *ngIf="product.rating">
+			<div class="rating-stars">
+				<i class="bi bi-star-fill" *ngFor="let s of getStars(product.rating)"></i>
+				<i class="bi bi-star" *ngFor="let s of getEmptyStars(product.rating)"></i>
+			</div>
+			<span class="rating-value">{{ product.rating }}</span>
+			<span class="reviews-count" *ngIf="product.reviews"
+				>({{ product.reviews.length }})</span
+			>
+		</div>
+
+		<!-- Price & Stock -->
+		<div class="product-footer">
+			<div class="price-container">
+				<div class="price-row" *ngIf="!hasDiscount()">
+					<span class="price-current">${{ product.price.toFixed(2) }}</span>
+				</div>
+				<div class="price-row" *ngIf="hasDiscount()">
+					<span class="price-old">${{ product.price.toFixed(2) }}</span>
+					<span class="price-discounted">${{ getDiscountedPrice().toFixed(2) }}</span>
+				</div>
+				<div class="stock-status" [ngClass]="getStockClass()">
+					<i
+						class="bi"
+						[ngClass]="{
+							'bi-check-circle': isInStock() && product.stock >= 10,
+							'bi-exclamation-circle': product.stock < 10 && product.stock > 0,
+							'bi-x-circle': !isInStock(),
+						}"
+					></i>
+					<span>{{ getStockStatus() }}</span>
+				</div>
+			</div>
+
+			<!-- Add to Cart Button -->
+			<button class="btn btn-add-cart" (click)="onQuickAdd($event)" [disabled]="!isInStock()">
+				<i class="bi bi-cart-plus"></i>
+				<span *ngIf="viewMode === 'list'">Додати в кошик</span>
+			</button>
+		</div>
+	</div>
 </div>

@@ -8,9 +8,3 @@
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutComponent {}
-
-
-
-
-
-

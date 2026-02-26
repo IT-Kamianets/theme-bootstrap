@@ -53,7 +53,3 @@ export class HeaderComponent {
 		this.isMenuOpen = false;
 	}
 }
-
-
-
-

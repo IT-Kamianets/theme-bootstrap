@@ -8,8 +8,3 @@
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TestimonialsComponent {}
-
-
-
-
-

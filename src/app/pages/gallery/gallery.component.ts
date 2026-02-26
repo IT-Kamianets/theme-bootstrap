@@ -1,7 +1,7 @@
 ﻿import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 type GalleryItem = {
 	id: number;
@@ -139,8 +139,7 @@ export class GalleryComponent {
 		const category = this.selectedCategory;
 
 		return this.items.filter((item) => {
-			const matchesCategory =
-				category === 'All categories' || item.tags.includes(category);
+			const matchesCategory = category === 'All categories' || item.tags.includes(category);
 
 			if (!matchesCategory) {
 				return false;
@@ -191,8 +190,3 @@ export class GalleryComponent {
 		this.goToPage(this.currentPage - 1);
 	}
 }
-
-
-
-
-

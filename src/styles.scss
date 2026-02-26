@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css");
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css');
 
 /* Design tokens (CSS variables). Runtime-themable; keep SCSS using var(--token) */
 :root {
-
-	
 	/* brand / actions */
 	--c-primary: #256eff;
 	--c-primary-hover: #0051f1;
@@ -88,32 +86,31 @@ html[data-mode='dark'] {
 
 /* ITKP = city brand colors */
 html[data-mode='itkp'] {
-  /* SURFACES */
-  --c-bg-primary: #e3f2fd;      /* світло-блакитний */
-  --c-bg-secondary: #a7c7e7;    /* синій */
-  --c-bg-tertiary: #fffde7;     /* ледь жовтий */
-  
-  /* ACCENTS */
-  --c-primary: #d4962a;          /* приглушений золотий */
-  --c-primary-hover: #b87d20;
-  --c-secondary: #01579b;        /* синій */
-  --c-secondary-hover: #004d84;
-  
-  /* TEXT */
-  --c-text-primary: #2c3e50;     
-  --c-text-secondary: #1a252f;   
-  --c-text-muted: #546e7a;    
-  --c-text-exeption: #2c3e50;   /* червоний для помилок */   
-  
-  /* BORDERS & SHADOWS */
-  --c-border: #0700d33d;
-  --shadow-sm: 0 2px 5px rgba(1,87,155,0.15);
-  --shadow-md: 0 12px 35px rgba(1,87,155,0.2);
-  
-  /* FOCUS RING */
-  --focus-ring: 0 0 0 4px rgba(249,168,37,0.5);
-}
+	/* SURFACES */
+	--c-bg-primary: #e3f2fd; /* світло-блакитний */
+	--c-bg-secondary: #a7c7e7; /* синій */
+	--c-bg-tertiary: #fffde7; /* ледь жовтий */
 
+	/* ACCENTS */
+	--c-primary: #d4962a; /* приглушений золотий */
+	--c-primary-hover: #b87d20;
+	--c-secondary: #01579b; /* синій */
+	--c-secondary-hover: #004d84;
+
+	/* TEXT */
+	--c-text-primary: #2c3e50;
+	--c-text-secondary: #1a252f;
+	--c-text-muted: #546e7a;
+	--c-text-exeption: #2c3e50; /* червоний для помилок */
+
+	/* BORDERS & SHADOWS */
+	--c-border: #0700d33d;
+	--shadow-sm: 0 2px 5px rgba(1, 87, 155, 0.15);
+	--shadow-md: 0 12px 35px rgba(1, 87, 155, 0.2);
+
+	/* FOCUS RING */
+	--focus-ring: 0 0 0 4px rgba(249, 168, 37, 0.5);
+}
 
 /* ========= density ========= */
 html[data-density='compact'] {
@@ -135,6 +132,5 @@ html[data-radius='square'] {
 	--radius-card: 0px;
 	--radius-btn: 0px;
 }
-
 
 /* test commit */

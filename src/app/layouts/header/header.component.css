@@ -5,7 +5,9 @@
 	position: sticky;
 	top: 0;
 	z-index: 1000;
-	transition: background var(--motion), border-color var(--motion);
+	transition:
+		background var(--motion),
+		border-color var(--motion);
 }
 
 .header__container {
@@ -139,9 +141,9 @@
 }
 
 /* Shorter text pills - narrower width */
-.header__pill[aria-label*="compact"],
-.header__pill[aria-label*="rounded"],
-.header__pill[aria-label*="square"] {
+.header__pill[aria-label*='compact'],
+.header__pill[aria-label*='rounded'],
+.header__pill[aria-label*='square'] {
 	min-width: 36px;
 	width: 36px;
 }
@@ -242,9 +244,9 @@
 		height: 16px;
 	}
 
-	.header__pill[aria-label*="compact"],
-	.header__pill[aria-label*="rounded"],
-	.header__pill[aria-label*="square"] {
+	.header__pill[aria-label*='compact'],
+	.header__pill[aria-label*='rounded'],
+	.header__pill[aria-label*='square'] {
 		min-width: 32px;
 		width: 32px;
 	}

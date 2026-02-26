@@ -16,7 +16,3 @@ export const serverRoutes: ServerRoute[] = [
 	// fallback must be SSR (otherwise it tries to prerender everything)
 	{ path: '**', renderMode: RenderMode.Server },
 ];
-
-
-
-

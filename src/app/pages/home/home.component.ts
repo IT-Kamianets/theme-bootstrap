@@ -12,7 +12,6 @@ import { TestimonialsComponent } from '../../components/testimonials/testimonial
 import { TrustBarComponent } from '../../components/trust-bar/trust-bar.component';
 import { UseCasesComponent } from '../../components/use-cases/use-cases.component';
 
-
 @Component({
 	imports: [
 		HeroComponent,
@@ -33,8 +32,3 @@ import { UseCasesComponent } from '../../components/use-cases/use-cases.componen
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {}
-
-
-
-
-

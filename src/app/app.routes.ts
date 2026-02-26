@@ -20,7 +20,8 @@ export const routes: Routes = [
 			{ path: 'table', component: TablePageComponent },
 			{
 				path: 'profile/:id',
-				loadComponent: () => import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
+				loadComponent: () =>
+					import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
 			},
 			{ path: 'profile', redirectTo: 'profile/1', pathMatch: 'full' },
 		],
@@ -30,7 +31,3 @@ export const routes: Routes = [
 		redirectTo: '',
 	},
 ];
-
-
-
-

@@ -2,7 +2,9 @@
 	background: var(--c-bg-secondary);
 	border-top: 1px solid var(--c-border);
 	padding: var(--sp-8) 0 var(--sp-6);
-	transition: background var(--motion), border-color var(--motion);
+	transition:
+		background var(--motion),
+		border-color var(--motion);
 }
 
 .footer__container {

@@ -1,5 +1,5 @@
-﻿import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 // Ð†Ð¼Ð¿Ð¾Ñ€Ñ‚ÑƒÑ”Ð¼Ð¾ Ð¼Ð°ÑÐ¸Ð² Ð´Ð°Ð½Ð¸Ñ…
 import { PRODUCTS } from '../../data/products';
@@ -7,24 +7,19 @@ import { PRODUCTS } from '../../data/products';
 import { Product } from '../../models/Product.model';
 
 @Component({
-  selector: 'app-table',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+	selector: 'app-table',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: true,
+	imports: [CommonModule],
+	templateUrl: './table.component.html',
+	styleUrls: ['./table.component.css'],
 })
 export class TablePageComponent {
-  products: Product[] = PRODUCTS;
+	products: Product[] = PRODUCTS;
 
-  constructor(private router: Router) {}
+	constructor(private router: Router) {}
 
-  buyNow(item: Product) {
-    this.router.navigate(['/form.component'], { queryParams: { id: item.id } });
-  }
+	buyNow(item: Product) {
+		this.router.navigate(['/form.component'], { queryParams: { id: item.id } });
+	}
 }
-
-
-
-
-
