@@ -21,6 +21,7 @@ h2,
 	background: var(--c-bg-secondary);
 	border-color: var(--c-border) !important;
 	box-shadow: var(--shadow-sm);
+	color: var(--c-text-primary);
 }
 
 .border {
@@ -31,12 +32,19 @@ h2,
 	border-radius: calc(var(--radius-card) + 6px) !important;
 }
 
-/* keep Pro card readable across modes */
-.bg-dark {
-	background: var(--c-text-secondary) !important;
+/* Pro card — inverted surface that adapts to each theme */
+.card.bg-dark {
+	background: var(--c-bg-inverse) !important;
+}
+.card.bg-dark .fw-bold,
+.card.bg-dark .fw-semibold,
+.card.bg-dark span,
+.card.bg-dark p {
+	color: var(--c-text-inverse) !important;
 }
 .text-white-50 {
-	opacity: 0.72;
+	color: var(--c-text-inverse) !important;
+	opacity: 0.65;
 }
 
 /* buttons */
@@ -48,10 +56,13 @@ h2,
 	background: var(--c-bg-secondary) !important;
 }
 
-.btn-light {
-	background: #fff !important;
-	border-color: #fff !important;
-	color: var(--c-text-secondary) !important;
+.card.bg-dark .btn-light {
+	background: var(--c-text-inverse) !important;
+	border-color: transparent !important;
+	color: var(--c-bg-inverse) !important;
+}
+.card.bg-dark .btn-light:hover {
+	opacity: 0.85;
 }
 
 .exception {

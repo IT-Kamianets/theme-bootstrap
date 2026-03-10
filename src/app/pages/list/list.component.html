@@ -2,46 +2,55 @@
 	<div class="list-layout">
 		<!-- FILTER SIDEBAR -->
 		<aside class="filters-sidebar" [class.collapsed]="!showFiltersSidebar">
-			<div class="filters-inner">
-				<div class="filters-header">
-					<span class="filters-title"> <i class="bi bi-funnel me-2"></i>Filters </span>
+			<div class="p-4 d-flex flex-column gap-3">
+				<div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+					<span class="small fw-semibold text-uppercase">
+						<i class="bi bi-funnel me-2"></i>Filters
+					</span>
+				<button type="button" class="btn-close sidebar-close-btn" (click)="toggleFiltersSidebar()" aria-label="Close"></button>
 				</div>
 
 				<!-- SEARCH -->
-				<div class="filter-group">
-					<label class="filter-label"><i class="bi bi-search me-1"></i>Search</label>
+				<div class="d-flex flex-column gap-1">
+					<label class="small fw-semibold text-uppercase">
+						<i class="bi bi-search me-1"></i>Search
+					</label>
 					<input
 						type="text"
-						class="filter-input"
+						class="form-control form-control-sm"
 						[(ngModel)]="filters.searchQuery"
 						(ngModelChange)="onSearchChange()"
 						placeholder="Search products..."
 					/>
 				</div>
 
-				<div class="filter-divider"></div>
+				<hr class="my-0" />
 
 				<!-- CATEGORY -->
-				<div class="filter-group">
-					<label class="filter-label"><i class="bi bi-tag me-1"></i>Category</label>
+				<div class="d-flex flex-column gap-1">
+					<label class="small fw-semibold text-uppercase">
+						<i class="bi bi-tag me-1"></i>Category
+					</label>
 					<select
-						class="filter-select"
+						class="form-select form-select-sm"
 						[(ngModel)]="filters.category"
 						(change)="onCategoryChange()"
 					>
 						<option value="">All categories</option>
-						<option *ngFor="let category of categories" [value]="category">
-							{{ category }}
-						</option>
+						@for (category of categories; track category) {
+							<option [value]="category">{{ category }}</option>
+						}
 					</select>
 				</div>
 
-				<div class="filter-divider"></div>
+				<hr class="my-0" />
 
 				<!-- PRICE -->
-				<div class="filter-group">
-					<label class="filter-label"><i class="bi bi-cash me-1"></i>Price</label>
-					<div class="price-display">
+				<div class="d-flex flex-column gap-2">
+					<label class="small fw-semibold text-uppercase">
+						<i class="bi bi-cash me-1"></i>Price
+					</label>
+					<div class="text-center small fw-semibold border rounded px-2 py-1" style="color: var(--c-primary);">
 						${{ filters.priceMin }} – ${{ filters.priceMax }}
 					</div>
 					<div class="price-range-wrapper">
@@ -49,198 +58,157 @@
 							<div
 								class="price-range-fill"
 								[style.left.%]="(filters.priceMin / maxPrice) * 100"
-								[style.width.%]="
-									((filters.priceMax - filters.priceMin) / maxPrice) * 100
-								"
+								[style.width.%]="((filters.priceMax - filters.priceMin) / maxPrice) * 100"
 							></div>
 						</div>
-						<input
-							type="range"
-							class="range-input range-min"
-							[(ngModel)]="filters.priceMin"
-							[min]="minPrice"
-							[max]="maxPrice"
-							step="10"
-							(ngModelChange)="onPriceRangeChange()"
-						/>
-						<input
-							type="range"
-							class="range-input range-max"
-							[(ngModel)]="filters.priceMax"
-							[min]="minPrice"
-							[max]="maxPrice"
-							step="10"
-							(ngModelChange)="onPriceRangeChange()"
-						/>
+						<input type="range" class="range-input range-min" [(ngModel)]="filters.priceMin" [min]="minPrice" [max]="maxPrice" step="10" (ngModelChange)="onPriceRangeChange()" />
+						<input type="range" class="range-input range-max" [(ngModel)]="filters.priceMax" [min]="minPrice" [max]="maxPrice" step="10" (ngModelChange)="onPriceRangeChange()" />
 					</div>
 				</div>
 
-				<div class="filter-divider"></div>
+				<hr class="my-0" />
 
 				<!-- STOCK -->
-				<div class="filter-group">
-					<label class="filter-label"
-						><i class="bi bi-box-seam me-1"></i>Availability</label
-					>
-					<label class="filter-checkbox">
-						<input
-							type="checkbox"
-							[(ngModel)]="filters.inStockOnly"
-							(ngModelChange)="onStockFilterChange()"
-						/>
-						<span class="checkbox-mark"></span>
-						In stock only
+				<div class="d-flex flex-column gap-1">
+					<label class="small fw-semibold text-uppercase">
+						<i class="bi bi-box-seam me-1"></i>Availability
 					</label>
+					<div class="form-check mb-0">
+						<input type="checkbox" class="form-check-input" id="inStockOnly" [(ngModel)]="filters.inStockOnly" (ngModelChange)="onStockFilterChange()" />
+						<label class="form-check-label small" for="inStockOnly">In stock only</label>
+					</div>
 				</div>
 
-				<div class="filter-divider"></div>
+				<hr class="my-0" />
 
 				<!-- SORT -->
-				<div class="filter-group">
-					<label class="filter-label"
-						><i class="bi bi-arrow-down-up me-1"></i>Sort by</label
-					>
-					<select
-						class="filter-select"
-						[(ngModel)]="filters.sortBy"
-						(change)="onSortChange()"
-					>
-						<option value="newest">New arrivals</option>
-						<option value="price-asc">Price: low → high</option>
-						<option value="price-desc">Price: high → low</option>
+				<div class="d-flex flex-column gap-1">
+					<label class="small fw-semibold text-uppercase">
+						<i class="bi bi-arrow-down-up me-1"></i>Sort by
+					</label>
+					<select class="form-select form-select-sm" [(ngModel)]="filters.sortBy" (change)="onSortChange()">
+						<option value="newest">Newest</option>
+						<option value="price-asc">Price: Low to High</option>
+						<option value="price-desc">Price: High to Low</option>
 						<option value="rating">Rating</option>
 						<option value="name">Name A–Z</option>
 					</select>
 				</div>
 
-				<!-- RESET -->
-				<button class="btn-reset" *ngIf="hasActiveFilters()" (click)="resetFilters()">
-					<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
-				</button>
+				@if (hasActiveFilters()) {
+					<button type="button" class="btn btn-outline-secondary btn-sm w-100" (click)="resetFilters()">
+						<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
+					</button>
+				}
 			</div>
 		</aside>
 
 		<!-- MAIN CONTENT -->
 		<main class="products-main">
-			<!-- Sidebar toggle — завжди видима, незалежно від стану сайдбару -->
 			<button
+				type="button"
 				class="sidebar-toggle"
 				(click)="toggleFiltersSidebar()"
 				[title]="showFiltersSidebar ? 'Hide filters' : 'Show filters'"
 			>
-				<i
-					class="bi"
-					[ngClass]="showFiltersSidebar ? 'bi-chevron-left' : 'bi-chevron-right'"
-				></i>
+				<i class="bi" [class.bi-chevron-left]="showFiltersSidebar" [class.bi-chevron-right]="!showFiltersSidebar"></i>
 			</button>
 
 			<!-- Page header -->
-			<div class="page-header">
+			<div class="d-flex align-items-end justify-content-between mb-4">
 				<div>
-					<h1 class="page-title">product catalogue</h1>
-					<p class="page-subtitle">
-						<strong>{{ filteredProducts.length }}</strong> items found
+					<h1 class="fw-bold mb-1" style="font-size: 2rem; color: var(--c-text-secondary);">Product catalogue</h1>
+					<p class="text-secondary mb-0 small">
+						<strong class="fw-semibold" style="color: var(--c-text-secondary);">{{ filteredProducts.length }}</strong> items found
 					</p>
 				</div>
-				<div class="view-mode-toggle">
-					<button
-						class="btn-view-mode"
-						[class.active]="viewMode.type === 'grid'"
-						(click)="setViewMode('grid')"
-						title="Grid"
-					>
+				<div class="d-flex gap-2 align-items-center">
+					<button type="button" class="btn btn-outline-secondary btn-sm mobile-filters-btn" (click)="toggleFiltersSidebar()">
+						<i class="bi bi-funnel me-1"></i>Filters
+					</button>
+				<div class="d-flex border rounded overflow-hidden">
+					<button type="button" class="btn btn-sm px-3 border-0" [class.btn-primary]="viewMode.type === 'grid'" [class.text-secondary]="viewMode.type !== 'grid'" (click)="setViewMode('grid')" title="Grid">
 						<i class="bi bi-grid-3x3-gap"></i>
 					</button>
-					<button
-						class="btn-view-mode"
-						[class.active]="viewMode.type === 'list'"
-						(click)="setViewMode('list')"
-						title="List"
-					>
+					<button type="button" class="btn btn-sm px-3 border-0" [class.btn-primary]="viewMode.type === 'list'" [class.text-secondary]="viewMode.type !== 'list'" (click)="setViewMode('list')" title="List">
 						<i class="bi bi-list-ul"></i>
 					</button>
 				</div>
+				</div>
 			</div>
 
-			<!-- Active chips -->
-			<div class="active-chips" *ngIf="hasActiveFilters()">
-				<span
-					class="chip"
-					*ngIf="filters.category"
-					(click)="filters.category = ''; onCategoryChange()"
-				>
-					{{ filters.category }} <i class="bi bi-x"></i>
-				</span>
-				<span
-					class="chip"
-					*ngIf="filters.searchQuery"
-					(click)="filters.searchQuery = ''; onSearchChange()"
-				>
-					"{{ filters.searchQuery }}" <i class="bi bi-x"></i>
-				</span>
-				<span
-					class="chip"
-					*ngIf="filters.inStockOnly"
-					(click)="filters.inStockOnly = false; onStockFilterChange()"
-				>
-					In stock <i class="bi bi-x"></i>
-				</span>
-				<button class="chip chip-reset" (click)="resetFilters()">
-					<i class="bi bi-x-circle me-1"></i>Clear all
-				</button>
-			</div>
+			<!-- Active filter chips -->
+			@if (hasActiveFilters()) {
+				<div class="d-flex flex-wrap gap-2 mb-4">
+					@if (filters.category) {
+						<button type="button" class="chip-active" (click)="filters.category = ''; onCategoryChange()">
+							{{ filters.category }} <i class="bi bi-x ms-1"></i>
+						</button>
+					}
+					@if (filters.searchQuery) {
+						<button type="button" class="chip-active" (click)="filters.searchQuery = ''; onSearchChange()">
+							&quot;{{ filters.searchQuery }}&quot; <i class="bi bi-x ms-1"></i>
+						</button>
+					}
+					@if (filters.inStockOnly) {
+						<button type="button" class="chip-active" (click)="filters.inStockOnly = false; onStockFilterChange()">
+							In stock <i class="bi bi-x ms-1"></i>
+						</button>
+					}
+					<button type="button" class="chip-reset" (click)="resetFilters()">
+						<i class="bi bi-x-circle me-1"></i>Clear all
+					</button>
+				</div>
+			}
 
 			<!-- Products grid -->
-			<div class="products-container" *ngIf="displayedProducts.length > 0">
+			@if (displayedProducts.length > 0) {
 				<div class="products-grid" [class.list-view]="viewMode.type === 'list'">
-					<div *ngFor="let product of displayedProducts">
+					@for (product of displayedProducts; track product.id) {
 						<app-list-item
 							[product]="product"
 							[viewMode]="viewMode.type"
 							(viewProduct)="onViewProduct($event)"
 							(quickAddToCart)="onQuickAddToCart(product)"
-						>
-						</app-list-item>
-					</div>
+						/>
+					}
 				</div>
-			</div>
+			}
 
-			<!-- Empty -->
-			<div class="empty-state" *ngIf="displayedProducts.length === 0">
-				<i class="bi bi-inbox empty-icon"></i>
-				<h3 class="empty-title">Nothing found</h3>
-				<p class="empty-text">Try adjusting your filters</p>
-				<button class="btn-primary-action" (click)="resetFilters()">
-					<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
-				</button>
-			</div>
+			<!-- Empty state -->
+			@if (displayedProducts.length === 0) {
+				<div class="text-center py-5 px-4 border rounded-4" style="background: var(--c-bg-secondary);">
+					<i class="bi bi-inbox display-4 text-secondary opacity-50 d-block mb-3"></i>
+					<h5 class="fw-bold mb-2">Nothing found</h5>
+					<p class="text-secondary mb-3">Try adjusting your filters</p>
+					<button type="button" class="btn btn-primary btn-sm" (click)="resetFilters()">
+						<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
+					</button>
+				</div>
+			}
 
 			<!-- Pagination -->
-			<div class="pagination-container" *ngIf="totalPages > 1">
-				<nav>
-					<ul class="pagination">
+			@if (totalPages > 1) {
+				<nav class="d-flex justify-content-center mt-5">
+					<ul class="pagination mb-0">
 						<li class="page-item" [class.disabled]="currentPage === 1">
-							<a class="page-link" (click)="previousPage()"
-								><i class="bi bi-chevron-left"></i
-							></a>
+							<button type="button" class="page-link" (click)="previousPage()"><i class="bi bi-chevron-left"></i></button>
 						</li>
-						<li
-							*ngFor="let page of getPageNumbers()"
-							class="page-item"
-							[class.active]="page === currentPage"
-						>
-							<a class="page-link" (click)="goToPage(page)">{{ page }}</a>
-						</li>
+						@for (page of getPageNumbers(); track page) {
+							<li class="page-item" [class.active]="page === currentPage">
+								<button type="button" class="page-link" (click)="goToPage(page)">{{ page }}</button>
+							</li>
+						}
 						<li class="page-item" [class.disabled]="currentPage === totalPages">
-							<a class="page-link" (click)="nextPage()"
-								><i class="bi bi-chevron-right"></i
-							></a>
+							<button type="button" class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></button>
 						</li>
 					</ul>
 				</nav>
-			</div>
+			}
 		</main>
 	</div>
 </div>
 
-<div class="mobile-filter-overlay" *ngIf="showMobileFilters" (click)="toggleMobileFilters()"></div>
+@if (showFiltersSidebar) {
+	<div class="mobile-filter-overlay" (click)="toggleFiltersSidebar()"></div>
+}

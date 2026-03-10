@@ -59,6 +59,10 @@
 
 	/* focus */
 	--focus-ring: 0 0 0 3px rgba(37, 110, 255, 0.35);
+
+	/* inverse surface (for contrast cards) */
+	--c-bg-inverse: #17224f;
+	--c-text-inverse: #ffffff;
 }
 
 /* ========= modes ========= */
@@ -82,6 +86,10 @@ html[data-mode='dark'] {
 
 	/* focus (keeps using primary) */
 	--focus-ring: 0 0 0 3px rgba(37, 110, 255, 0.35);
+
+	/* inverse surface */
+	--c-bg-inverse: #ffffff;
+	--c-text-inverse: #1a1a1a;
 }
 
 /* ITKP = city brand colors */
@@ -110,6 +118,10 @@ html[data-mode='itkp'] {
 
 	/* FOCUS RING */
 	--focus-ring: 0 0 0 4px rgba(249, 168, 37, 0.5);
+
+	/* inverse surface */
+	--c-bg-inverse: #1a252f;
+	--c-text-inverse: #ffffff;
 }
 
 /* ========= density ========= */
@@ -131,6 +143,42 @@ html[data-radius='square'] {
 	--radius: 0px;
 	--radius-card: 0px;
 	--radius-btn: 0px;
+}
+
+/* ========= Bootstrap global overrides for dark/themed modes ========= */
+
+/* btn-close is SVG-based black icon — invert in dark mode */
+html[data-mode='dark'] .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Bootstrap form elements don't inherit CSS variables by default */
+html[data-mode='dark'] .form-control,
+html[data-mode='dark'] .form-select {
+	background-color: var(--c-bg-primary);
+	border-color: var(--c-border);
+	color: var(--c-text-primary);
+}
+
+html[data-mode='dark'] .form-control:focus,
+html[data-mode='dark'] .form-select:focus {
+	background-color: var(--c-bg-primary);
+	color: var(--c-text-primary);
+}
+
+html[data-mode='dark'] .form-control::placeholder,
+html[data-mode='dark'] .form-select::placeholder {
+	color: var(--c-placeholder);
+}
+
+html[data-mode='dark'] .form-check-input {
+	background-color: var(--c-bg-primary);
+	border-color: var(--c-border);
+}
+
+html[data-mode='dark'] .form-check-label,
+html[data-mode='dark'] label {
+	color: var(--c-text-primary);
 }
 
 /* test commit */

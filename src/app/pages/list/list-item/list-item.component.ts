@@ -9,7 +9,6 @@ import {
 	PLATFORM_ID,
 	inject,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { Product } from '../../../models/Product.model';
 
 @Component({
@@ -31,8 +30,6 @@ export class ListItemComponent implements OnInit {
 	isHovered = false;
 
 	private platformId = inject(PLATFORM_ID);
-
-	constructor(private router: Router) {}
 
 	isBrowser(): boolean {
 		return isPlatformBrowser(this.platformId);
@@ -72,7 +69,6 @@ export class ListItemComponent implements OnInit {
 
 	onView(): void {
 		this.viewProduct.emit(this.product.id);
-		this.router.navigate(['/profile.component', this.product.id]);
 	}
 
 	onQuickAdd(event: Event): void {
@@ -105,9 +101,9 @@ export class ListItemComponent implements OnInit {
 	}
 
 	getStockStatus(): string {
-		if (this.product.stock === 0) return 'ÐÐµÐ¼Ð°Ñ” Ð² Ð½Ð°ÑÐ²Ð½Ð¾ÑÑ‚Ñ–';
-		if (this.product.stock < 10) return `Ð—Ð°Ð»Ð¸ÑˆÐ¸Ð»Ð¾ÑÑŒ ${this.product.stock}`;
-		return 'Ð’ Ð½Ð°ÑÐ²Ð½Ð¾ÑÑ‚Ñ–';
+		if (this.product.stock === 0) return 'Out of stock';
+		if (this.product.stock < 10) return `Only ${this.product.stock} left`;
+		return 'In stock';
 	}
 
 	getStockClass(): string {

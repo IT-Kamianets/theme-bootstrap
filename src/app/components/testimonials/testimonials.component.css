@@ -23,6 +23,14 @@ h2,
 	box-shadow: var(--shadow-sm);
 }
 
+blockquote {
+	color: var(--c-text-primary);
+}
+
+figcaption {
+	color: var(--c-text-muted) !important;
+}
+
 .border {
 	border-color: var(--c-border) !important;
 }

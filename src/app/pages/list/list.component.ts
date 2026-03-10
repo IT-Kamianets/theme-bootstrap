@@ -74,6 +74,9 @@ export class ListComponent implements OnInit {
 	constructor(private router: Router) {}
 
 	ngOnInit(): void {
+		if (this.isBrowser() && window.innerWidth <= 1024) {
+			this.showFiltersSidebar = false;
+		}
 		this.extractCategories();
 		this.calculatePriceRange();
 		this.applyFilters();
@@ -249,6 +252,7 @@ export class ListComponent implements OnInit {
 	// CART
 	// ============================================
 	onQuickAddToCart(product: Product): void {
+		if (!this.isBrowser()) return;
 		const cart = this.getCartFromStorage();
 		const item = cart.find((c: any) => c.id === product.id);
 
@@ -263,7 +267,7 @@ export class ListComponent implements OnInit {
 			});
 
 		localStorage.setItem('cart', JSON.stringify(cart));
-		alert(`${product.title} Ð´Ð¾Ð´Ð°Ð½Ð¾ Ð² ÐºÐ¾ÑˆÐ¸Ðº`);
+		alert(`${product.title} added to cart`);
 	}
 
 	getCartFromStorage(): any[] {
@@ -275,7 +279,7 @@ export class ListComponent implements OnInit {
 	// VIEW PRODUCT
 	// ============================================
 	onViewProduct(id: number): void {
-		this.router.navigate(['/profile.component', id]);
+		this.router.navigate(['/profile', id]);
 	}
 
 	// ============================================

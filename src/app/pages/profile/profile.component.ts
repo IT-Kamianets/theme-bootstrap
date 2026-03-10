@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { PRODUCTS } from '../../data/products';
 import { Product, ProductReview } from '../../models/Product.model';
 
@@ -43,7 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 	private products = PRODUCTS;
 	private platformId = inject(PLATFORM_ID);
-	private routeSub: any;
+	private routeSub?: Subscription;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -55,7 +56,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		// ÐŸÑ–Ð´Ð¿Ð¸ÑÐºÐ° Ð· Ð²Ñ–Ð´Ð¿Ð¸ÑÐºÐ¾ÑŽ Ñƒ ngOnDestroy
+		// Subscribe with cleanup in ngOnDestroy
 		this.routeSub = this.route.paramMap.subscribe((params) => {
 			const id = params.get('id');
 
@@ -127,12 +128,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
 			this.isFavorite = false;
 			const updated = favs.filter((x) => x !== id);
 			localStorage.setItem('favorites', JSON.stringify(updated));
-			this.showNotification('Ð’Ð¸Ð´Ð°Ð»ÐµÐ½Ð¾ Ð· ÑƒÐ»ÑŽÐ±Ð»ÐµÐ½Ð¸Ñ…');
+			this.showNotification('Removed from favourites');
 		} else {
 			this.isFavorite = true;
 			favs.push(id);
 			localStorage.setItem('favorites', JSON.stringify(favs));
-			this.showNotification('Ð”Ð¾Ð´Ð°Ð½Ð¾ Ð² ÑƒÐ»ÑŽÐ±Ð»ÐµÐ½Ñ–');
+			this.showNotification('Added to favourites');
 		}
 	}
 
@@ -156,7 +157,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 		localStorage.setItem('cart', JSON.stringify(cart));
 		this.showNotification(
-			`${this.product.title} Ð´Ð¾Ð´Ð°Ð½Ð¾ Ð² ÐºÐ¾ÑˆÐ¸Ðº (${this.quantity} ÑˆÑ‚.)`,
+			`${this.product.title} added to cart (${this.quantity} pcs.)`,
 		);
 		this.quantity = 1;
 	}
@@ -206,7 +207,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 		}
 
 		this.product.reviews.unshift(review);
-		this.showNotification('Ð”ÑÐºÑƒÑ”Ð¼Ð¾ Ð·Ð° Ð²Ð°Ñˆ Ð²Ñ–Ð´Ð³ÑƒÐº!');
+		this.showNotification('Thank you for your review!');
 		this.resetReviewForm();
 		this.showReviewForm = false;
 	}
@@ -220,11 +221,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	}
 
 	navigateToList(): void {
-		this.router.navigate(['/list.component']);
+		this.router.navigate(['/list']);
 	}
 
 	navigateToProduct(id: number): void {
-		this.router.navigate(['/profile.component', id], { replaceUrl: true });
+		this.router.navigate(['/profile', id], { replaceUrl: true });
 	}
 
 	shareProduct(): void {
@@ -248,7 +249,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	copyToClipboard(text: string): void {
 		if (!this.isBrowser()) return;
 		navigator.clipboard.writeText(text).then(() => {
-			this.showNotification('ÐŸÐ¾ÑÐ¸Ð»Ð°Ð½Ð½Ñ ÑÐºÐ¾Ð¿Ñ–Ð¹Ð¾Ð²Ð°Ð½Ð¾');
+			this.showNotification('Link copied');
 		});
 	}
 
@@ -269,9 +270,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 	getStockStatus(): string {
 		if (!this.product) return '';
-		if (this.product.stock === 0) return 'ÐÐµÐ¼Ð°Ñ” Ð² Ð½Ð°ÑÐ²Ð½Ð¾ÑÑ‚Ñ–';
-		if (this.product.stock < 10) return `Ð—Ð°Ð»Ð¸ÑˆÐ¸Ð»Ð¾ÑÑŒ ${this.product.stock} ÑˆÑ‚.`;
-		return 'Ð’ Ð½Ð°ÑÐ²Ð½Ð¾ÑÑ‚Ñ–';
+		if (this.product.stock === 0) return 'Out of stock';
+		if (this.product.stock < 10) return `Only ${this.product.stock} left`;
+		return 'In stock';
 	}
 
 	getStockClass(): string {
@@ -282,7 +283,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	}
 
 	formatDate(date: Date): string {
-		return new Date(date).toLocaleDateString('uk-UA', {
+		return new Date(date).toLocaleDateString('en-US', {
 			year: 'numeric',
 			month: 'long',
 			day: 'numeric',
