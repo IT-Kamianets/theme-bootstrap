@@ -1,214 +1,135 @@
-<div class="list-page">
-	<div class="list-layout">
-		<!-- FILTER SIDEBAR -->
-		<aside class="filters-sidebar" [class.collapsed]="!showFiltersSidebar">
-			<div class="p-4 d-flex flex-column gap-3">
-				<div class="d-flex align-items-center justify-content-between border-bottom pb-3">
-					<span class="small fw-semibold text-uppercase">
-						<i class="bi bi-funnel me-2"></i>Filters
-					</span>
-				<button type="button" class="btn-close sidebar-close-btn" (click)="toggleFiltersSidebar()" aria-label="Close"></button>
+@let projects = filteredProjects();
+@let mode = viewMode();
+
+<div class="projects-page">
+
+	<!-- Filter Bar -->
+	<div class="projects-filter-bar">
+		<div class="container">
+			<div class="projects-filter-bar__inner">
+
+				<!-- Title -->
+				<div class="filter-title-block">
+					<h1 class="filter-title">Projects</h1>
+					<span class="filter-count">{{ projects.length }} found</span>
 				</div>
 
-				<!-- SEARCH -->
-				<div class="d-flex flex-column gap-1">
-					<label class="small fw-semibold text-uppercase">
-						<i class="bi bi-search me-1"></i>Search
-					</label>
+				<!-- Search -->
+				<div class="filter-search">
+					<i class="bi bi-search filter-search__icon"></i>
 					<input
-						type="text"
-						class="form-control form-control-sm"
-						[(ngModel)]="filters.searchQuery"
-						(ngModelChange)="onSearchChange()"
-						placeholder="Search products..."
+						type="search"
+						class="filter-search__input"
+						placeholder="Search by name or technology…"
+						[ngModel]="searchQuery()"
+						(ngModelChange)="searchQuery.set($event)"
 					/>
 				</div>
 
-				<hr class="my-0" />
+				<!-- Category -->
+				<select
+					class="filter-select"
+					[ngModel]="selectedCategory()"
+					(ngModelChange)="selectedCategory.set($event)"
+				>
+					<option value="">All categories</option>
+					@for (cat of categories(); track cat) {
+						<option [value]="cat">{{ cat }}</option>
+					}
+				</select>
 
-				<!-- CATEGORY -->
-				<div class="d-flex flex-column gap-1">
-					<label class="small fw-semibold text-uppercase">
-						<i class="bi bi-tag me-1"></i>Category
-					</label>
-					<select
-						class="form-select form-select-sm"
-						[(ngModel)]="filters.category"
-						(change)="onCategoryChange()"
-					>
-						<option value="">All categories</option>
-						@for (category of categories; track category) {
-							<option [value]="category">{{ category }}</option>
-						}
-					</select>
-				</div>
+				<!-- Status -->
+				<select
+					class="filter-select"
+					[ngModel]="selectedStatus()"
+					(ngModelChange)="selectedStatus.set($event)"
+				>
+					<option value="">All statuses</option>
+					@for (s of statuses(); track s) {
+						<option [value]="s">{{ s | titlecase }}</option>
+					}
+				</select>
 
-				<hr class="my-0" />
+				<!-- Spacer -->
+				<div class="filter-spacer"></div>
 
-				<!-- PRICE -->
-				<div class="d-flex flex-column gap-2">
-					<label class="small fw-semibold text-uppercase">
-						<i class="bi bi-cash me-1"></i>Price
-					</label>
-					<div class="text-center small fw-semibold border rounded px-2 py-1" style="color: var(--c-primary);">
-						${{ filters.priceMin }} – ${{ filters.priceMax }}
-					</div>
-					<div class="price-range-wrapper">
-						<div class="price-range-track">
-							<div
-								class="price-range-fill"
-								[style.left.%]="(filters.priceMin / maxPrice) * 100"
-								[style.width.%]="((filters.priceMax - filters.priceMin) / maxPrice) * 100"
-							></div>
-						</div>
-						<input type="range" class="range-input range-min" [(ngModel)]="filters.priceMin" [min]="minPrice" [max]="maxPrice" step="10" (ngModelChange)="onPriceRangeChange()" />
-						<input type="range" class="range-input range-max" [(ngModel)]="filters.priceMax" [min]="minPrice" [max]="maxPrice" step="10" (ngModelChange)="onPriceRangeChange()" />
-					</div>
-				</div>
-
-				<hr class="my-0" />
-
-				<!-- STOCK -->
-				<div class="d-flex flex-column gap-1">
-					<label class="small fw-semibold text-uppercase">
-						<i class="bi bi-box-seam me-1"></i>Availability
-					</label>
-					<div class="form-check mb-0">
-						<input type="checkbox" class="form-check-input" id="inStockOnly" [(ngModel)]="filters.inStockOnly" (ngModelChange)="onStockFilterChange()" />
-						<label class="form-check-label small" for="inStockOnly">In stock only</label>
-					</div>
-				</div>
-
-				<hr class="my-0" />
-
-				<!-- SORT -->
-				<div class="d-flex flex-column gap-1">
-					<label class="small fw-semibold text-uppercase">
-						<i class="bi bi-arrow-down-up me-1"></i>Sort by
-					</label>
-					<select class="form-select form-select-sm" [(ngModel)]="filters.sortBy" (change)="onSortChange()">
-						<option value="newest">Newest</option>
-						<option value="price-asc">Price: Low to High</option>
-						<option value="price-desc">Price: High to Low</option>
-						<option value="rating">Rating</option>
-						<option value="name">Name A–Z</option>
-					</select>
-				</div>
-
+				<!-- Reset -->
 				@if (hasActiveFilters()) {
-					<button type="button" class="btn btn-outline-secondary btn-sm w-100" (click)="resetFilters()">
-						<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
+					<button type="button" class="filter-reset-btn" (click)="resetFilters()">
+						<i class="bi bi-x-lg"></i> Clear
 					</button>
 				}
-			</div>
-		</aside>
 
-		<!-- MAIN CONTENT -->
-		<main class="products-main">
-			<button
-				type="button"
-				class="sidebar-toggle"
-				(click)="toggleFiltersSidebar()"
-				[title]="showFiltersSidebar ? 'Hide filters' : 'Show filters'"
-			>
-				<i class="bi" [class.bi-chevron-left]="showFiltersSidebar" [class.bi-chevron-right]="!showFiltersSidebar"></i>
-			</button>
-
-			<!-- Page header -->
-			<div class="d-flex align-items-end justify-content-between mb-4">
-				<div>
-					<h1 class="fw-bold mb-1" style="font-size: 2rem; color: var(--c-text-secondary);">Product catalogue</h1>
-					<p class="text-secondary mb-0 small">
-						<strong class="fw-semibold" style="color: var(--c-text-secondary);">{{ filteredProducts.length }}</strong> items found
-					</p>
-				</div>
-				<div class="d-flex gap-2 align-items-center">
-					<button type="button" class="btn btn-outline-secondary btn-sm mobile-filters-btn" (click)="toggleFiltersSidebar()">
-						<i class="bi bi-funnel me-1"></i>Filters
-					</button>
-				<div class="d-flex border rounded overflow-hidden">
-					<button type="button" class="btn btn-sm px-3 border-0" [class.btn-primary]="viewMode.type === 'grid'" [class.text-secondary]="viewMode.type !== 'grid'" (click)="setViewMode('grid')" title="Grid">
+				<!-- View mode -->
+				<div class="view-mode-toggle">
+					<button
+						type="button"
+						class="view-mode-btn"
+						[class.view-mode-btn--active]="mode === 'grid'"
+						(click)="setViewMode('grid')"
+						title="Grid view"
+					>
 						<i class="bi bi-grid-3x3-gap"></i>
 					</button>
-					<button type="button" class="btn btn-sm px-3 border-0" [class.btn-primary]="viewMode.type === 'list'" [class.text-secondary]="viewMode.type !== 'list'" (click)="setViewMode('list')" title="List">
+					<button
+						type="button"
+						class="view-mode-btn"
+						[class.view-mode-btn--active]="mode === 'list'"
+						(click)="setViewMode('list')"
+						title="List view"
+					>
 						<i class="bi bi-list-ul"></i>
 					</button>
 				</div>
-				</div>
+
 			</div>
 
 			<!-- Active filter chips -->
 			@if (hasActiveFilters()) {
-				<div class="d-flex flex-wrap gap-2 mb-4">
-					@if (filters.category) {
-						<button type="button" class="chip-active" (click)="filters.category = ''; onCategoryChange()">
-							{{ filters.category }} <i class="bi bi-x ms-1"></i>
+				<div class="active-filters">
+					@if (selectedCategory()) {
+						<button type="button" class="active-filter-tag" (click)="selectedCategory.set('')">
+							{{ selectedCategory() }}<i class="bi bi-x ms-1"></i>
 						</button>
 					}
-					@if (filters.searchQuery) {
-						<button type="button" class="chip-active" (click)="filters.searchQuery = ''; onSearchChange()">
-							&quot;{{ filters.searchQuery }}&quot; <i class="bi bi-x ms-1"></i>
+					@if (selectedStatus()) {
+						<button type="button" class="active-filter-tag" (click)="selectedStatus.set('')">
+							{{ selectedStatus() | titlecase }}<i class="bi bi-x ms-1"></i>
 						</button>
 					}
-					@if (filters.inStockOnly) {
-						<button type="button" class="chip-active" (click)="filters.inStockOnly = false; onStockFilterChange()">
-							In stock <i class="bi bi-x ms-1"></i>
+					@if (searchQuery()) {
+						<button type="button" class="active-filter-tag" (click)="searchQuery.set('')">
+							"{{ searchQuery() }}"<i class="bi bi-x ms-1"></i>
 						</button>
-					}
-					<button type="button" class="chip-reset" (click)="resetFilters()">
-						<i class="bi bi-x-circle me-1"></i>Clear all
-					</button>
-				</div>
-			}
-
-			<!-- Products grid -->
-			@if (displayedProducts.length > 0) {
-				<div class="products-grid" [class.list-view]="viewMode.type === 'list'">
-					@for (product of displayedProducts; track product.id) {
-						<app-list-item
-							[product]="product"
-							[viewMode]="viewMode.type"
-							(viewProduct)="onViewProduct($event)"
-							(quickAddToCart)="onQuickAddToCart(product)"
-						/>
 					}
 				</div>
 			}
-
-			<!-- Empty state -->
-			@if (displayedProducts.length === 0) {
-				<div class="text-center py-5 px-4 border rounded-4" style="background: var(--c-bg-secondary);">
-					<i class="bi bi-inbox display-4 text-secondary opacity-50 d-block mb-3"></i>
-					<h5 class="fw-bold mb-2">Nothing found</h5>
-					<p class="text-secondary mb-3">Try adjusting your filters</p>
-					<button type="button" class="btn btn-primary btn-sm" (click)="resetFilters()">
-						<i class="bi bi-arrow-counterclockwise me-2"></i>Reset filters
-					</button>
-				</div>
-			}
-
-			<!-- Pagination -->
-			@if (totalPages > 1) {
-				<nav class="d-flex justify-content-center mt-5">
-					<ul class="pagination mb-0">
-						<li class="page-item" [class.disabled]="currentPage === 1">
-							<button type="button" class="page-link" (click)="previousPage()"><i class="bi bi-chevron-left"></i></button>
-						</li>
-						@for (page of getPageNumbers(); track page) {
-							<li class="page-item" [class.active]="page === currentPage">
-								<button type="button" class="page-link" (click)="goToPage(page)">{{ page }}</button>
-							</li>
-						}
-						<li class="page-item" [class.disabled]="currentPage === totalPages">
-							<button type="button" class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></button>
-						</li>
-					</ul>
-				</nav>
-			}
-		</main>
+		</div>
 	</div>
-</div>
 
-@if (showFiltersSidebar) {
-	<div class="mobile-filter-overlay" (click)="toggleFiltersSidebar()"></div>
-}
+	<!-- Grid -->
+	<div class="container projects-content">
+		@if (projects.length > 0) {
+			<div class="projects-grid" [class.projects-grid--list]="mode === 'list'">
+				@for (project of projects; track project.id; let i = $index) {
+					<app-list-item
+						[product]="project"
+						[viewMode]="mode"
+						[isFeatured]="i === 0"
+						(viewProject)="onViewProject($event)"
+					></app-list-item>
+				}
+			</div>
+		} @else {
+			<div class="projects-empty-state">
+				<i class="bi bi-search projects-empty-state__icon"></i>
+				<p class="projects-empty-state__title">No projects found</p>
+				<p class="projects-empty-state__desc">Try adjusting your filters or search query.</p>
+				<button type="button" class="btn btn-primary btn-sm" (click)="resetFilters()">
+					Reset filters
+				</button>
+			</div>
+		}
+	</div>
+
+</div>

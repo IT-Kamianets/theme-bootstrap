@@ -1,316 +1,165 @@
-﻿import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
+	ElementRef,
 	OnDestroy,
-	OnInit,
 	PLATFORM_ID,
+	ViewChild,
+	computed,
 	inject,
+	signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { map } from 'rxjs';
+
 import { PRODUCTS } from '../../data/products';
-import { Product, ProductReview } from '../../models/Product.model';
+import { Product } from '../../models/Product.model';
 
 @Component({
 	selector: 'app-profile',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
-	imports: [CommonModule, FormsModule],
+	imports: [CommonModule],
 	templateUrl: './profile.component.html',
 	styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-	product: Product | null = null;
-	productId: number | null = null;
-	notFound = false;
-	isFavorite = false;
-	activeTab = 'details';
+export class ProfileComponent implements AfterViewInit, OnDestroy {
+	private _route = inject(ActivatedRoute);
+	private _router = inject(Router);
+	private _platformId = inject(PLATFORM_ID);
+	_isBrowser = isPlatformBrowser(this._platformId);
 
-	selectedImage = '';
-	imageIndex = 0;
+	@ViewChild('galleryEl') galleryEl?: ElementRef<HTMLElement>;
 
-	relatedProducts: Product[] = [];
+	private _projects = PRODUCTS;
+	private _touchStartX = 0;
+	private _touchEndX = 0;
+	private _boundTouchStart = this._onTouchStart.bind(this);
+	private _boundTouchEnd = this._onTouchEnd.bind(this);
 
-	showReviewForm = false;
-	newReview = {
-		author: '',
-		rating: 5,
-		comment: '',
-	};
+	private _productIdSignal = toSignal(
+		this._route.paramMap.pipe(map((params) => parseInt(params.get('id') || '0', 10))),
+		{ initialValue: 0 }
+	);
 
-	quantity = 1;
+	project = computed<Product | null>(() => {
+		const id = this._productIdSignal();
+		if (!id) return null;
+		return this._projects.find((p) => p.id === id) || null;
+	});
 
-	private products = PRODUCTS;
-	private platformId = inject(PLATFORM_ID);
-	private routeSub?: Subscription;
+	notFound = computed(() => {
+		const id = this._productIdSignal();
+		return id > 0 && this.project() === null;
+	});
 
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-	) {}
+	selectedImageIndex = signal<number>(0);
 
-	isBrowser(): boolean {
-		return isPlatformBrowser(this.platformId);
+	mainImage = computed(() => {
+		const p = this.project();
+		if (!p) return '';
+		const hasGallery = p.images && p.images.length > 0;
+		return hasGallery ? p.images![this.selectedImageIndex()] : p.image;
+	});
+
+	relatedProjects = computed(() => {
+		const p = this.project();
+		if (!p || !p.technologies) return [];
+		return this._projects
+			.filter(
+				(other) =>
+					other.id !== p.id &&
+					other.technologies &&
+					other.technologies.some((tech) => p.technologies?.includes(tech))
+			)
+			.slice(0, 3);
+	});
+
+	constructor() {
+		if (this._isBrowser) {
+			window.scrollTo({ top: 0, behavior: 'instant' });
+		}
 	}
 
-	ngOnInit(): void {
-		// Subscribe with cleanup in ngOnDestroy
-		this.routeSub = this.route.paramMap.subscribe((params) => {
-			const id = params.get('id');
-
-			if (!id) {
-				this.notFound = true;
-				return;
-			}
-
-			this.productId = parseInt(id, 10);
-			this.loadProduct(this.productId);
-
-			if (this.isBrowser()) {
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			}
-		});
+	ngAfterViewInit(): void {
+		if (!this._isBrowser) return;
+		const el = this.galleryEl?.nativeElement;
+		if (!el) return;
+		el.addEventListener('touchstart', this._boundTouchStart, { passive: true });
+		el.addEventListener('touchend', this._boundTouchEnd, { passive: true });
 	}
 
 	ngOnDestroy(): void {
-		if (this.routeSub) {
-			this.routeSub.unsubscribe();
+		const el = this.galleryEl?.nativeElement;
+		if (!el) return;
+		el.removeEventListener('touchstart', this._boundTouchStart);
+		el.removeEventListener('touchend', this._boundTouchEnd);
+	}
+
+	private _onTouchStart(e: TouchEvent): void {
+		this._touchStartX = e.changedTouches[0].clientX;
+	}
+
+	private _onTouchEnd(e: TouchEvent): void {
+		this._touchEndX = e.changedTouches[0].clientX;
+		const delta = this._touchStartX - this._touchEndX;
+		if (Math.abs(delta) > 50) {
+			delta > 0 ? this.nextImage() : this.previousImage();
 		}
-	}
-
-	loadProduct(id: number): void {
-		const found = this.products.find((p) => p.id === id);
-
-		if (!found) {
-			this.product = null;
-			this.notFound = true;
-			return;
-		}
-
-		this.product = found;
-		this.notFound = false;
-
-		this.selectedImage = found.image;
-
-		this.relatedProducts = this.products
-			.filter((p) => found.relatedProductIds?.includes(p.id))
-			.slice(0, 4);
-
-		this.checkFavoriteStatus();
-	}
-
-	checkFavoriteStatus(): void {
-		const favorites = this.getFavoritesFromStorage();
-		this.isFavorite = favorites.includes(this.product!.id);
-	}
-
-	getFavoritesFromStorage(): number[] {
-		if (!this.isBrowser()) return [];
-		const stored = localStorage.getItem('favorites');
-		return stored ? JSON.parse(stored) : [];
-	}
-
-	getCartFromStorage(): any[] {
-		if (!this.isBrowser()) return [];
-		const stored = localStorage.getItem('cart');
-		return stored ? JSON.parse(stored) : [];
-	}
-
-	toggleFavorite(): void {
-		if (!this.isBrowser() || !this.product) return;
-
-		const favs = this.getFavoritesFromStorage();
-		const id = this.product.id;
-
-		if (favs.includes(id)) {
-			this.isFavorite = false;
-			const updated = favs.filter((x) => x !== id);
-			localStorage.setItem('favorites', JSON.stringify(updated));
-			this.showNotification('Removed from favourites');
-		} else {
-			this.isFavorite = true;
-			favs.push(id);
-			localStorage.setItem('favorites', JSON.stringify(favs));
-			this.showNotification('Added to favourites');
-		}
-	}
-
-	addToCart(): void {
-		if (!this.product || !this.isBrowser()) return;
-
-		let cart = this.getCartFromStorage();
-		const existing = cart.find((i) => i.id === this.product!.id);
-
-		if (existing) {
-			existing.quantity += this.quantity;
-		} else {
-			cart.push({
-				id: this.product.id,
-				title: this.product.title,
-				price: this.product.price,
-				image: this.product.image,
-				quantity: this.quantity,
-			});
-		}
-
-		localStorage.setItem('cart', JSON.stringify(cart));
-		this.showNotification(
-			`${this.product.title} added to cart (${this.quantity} pcs.)`,
-		);
-		this.quantity = 1;
-	}
-
-	showNotification(msg: string): void {
-		if (this.isBrowser()) alert(msg);
-	}
-
-	selectImage(img: string, index: number): void {
-		this.selectedImage = img;
-		this.imageIndex = index;
-	}
-
-	nextImage(): void {
-		if (!this.product?.images) return;
-		this.imageIndex = (this.imageIndex + 1) % this.product.images.length;
-		this.selectedImage = this.product.images[this.imageIndex];
-	}
-
-	previousImage(): void {
-		if (!this.product?.images) return;
-		this.imageIndex =
-			this.imageIndex === 0 ? this.product.images.length - 1 : this.imageIndex - 1;
-		this.selectedImage = this.product.images[this.imageIndex];
-	}
-
-	toggleReviewForm(): void {
-		this.showReviewForm = !this.showReviewForm;
-		if (!this.showReviewForm) this.resetReviewForm();
-	}
-
-	submitReview(): void {
-		if (!this.product) return;
-		if (!this.newReview.author || !this.newReview.comment) return;
-
-		const review: ProductReview = {
-			id: Date.now(),
-			author: this.newReview.author,
-			rating: this.newReview.rating,
-			comment: this.newReview.comment,
-			date: new Date(),
-			verified: false,
-		};
-
-		if (!this.product.reviews) {
-			this.product.reviews = [];
-		}
-
-		this.product.reviews.unshift(review);
-		this.showNotification('Thank you for your review!');
-		this.resetReviewForm();
-		this.showReviewForm = false;
-	}
-
-	resetReviewForm(): void {
-		this.newReview = {
-			author: '',
-			rating: 5,
-			comment: '',
-		};
 	}
 
 	navigateToList(): void {
-		this.router.navigate(['/list']);
+		this._router.navigate(['/list']);
 	}
 
-	navigateToProduct(id: number): void {
-		this.router.navigate(['/profile', id], { replaceUrl: true });
-	}
-
-	shareProduct(): void {
-		if (!this.isBrowser() || !this.product) return;
-
-		const url = window.location.href;
-
-		if (navigator.share) {
-			navigator
-				.share({
-					title: this.product.title,
-					text: this.product.description,
-					url,
-				})
-				.catch(() => this.copyToClipboard(url));
-		} else {
-			this.copyToClipboard(url);
+	navigateToProject(id: number): void {
+		this._router.navigate(['/profile', id], { replaceUrl: true });
+		this.selectedImageIndex.set(0);
+		if (this._isBrowser) {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
 	}
 
-	copyToClipboard(text: string): void {
-		if (!this.isBrowser()) return;
-		navigator.clipboard.writeText(text).then(() => {
-			this.showNotification('Link copied');
-		});
+	selectImage(index: number): void {
+		this.selectedImageIndex.set(index);
 	}
 
-	getDiscountedPrice(): number {
-		if (this.product?.discount) {
-			return this.product.price * (1 - this.product.discount / 100);
-		}
-		return this.product?.price || 0;
+	nextImage(): void {
+		const p = this.project();
+		if (!p || !p.images) return;
+		this.selectedImageIndex.update((i) => (i + 1) % p.images!.length);
 	}
 
-	hasDiscount(): boolean {
-		return !!this.product?.discount;
+	previousImage(): void {
+		const p = this.project();
+		if (!p || !p.images) return;
+		this.selectedImageIndex.update((i) => (i === 0 ? p.images!.length - 1 : i - 1));
 	}
 
-	isInStock(): boolean {
-		return !!this.product?.stock && this.product.stock > 0;
-	}
-
-	getStockStatus(): string {
-		if (!this.product) return '';
-		if (this.product.stock === 0) return 'Out of stock';
-		if (this.product.stock < 10) return `Only ${this.product.stock} left`;
-		return 'In stock';
-	}
-
-	getStockClass(): string {
-		if (!this.product) return '';
-		if (this.product.stock === 0) return 'out-of-stock';
-		if (this.product.stock < 10) return 'low-stock';
-		return 'in-stock';
-	}
-
-	formatDate(date: Date): string {
-		return new Date(date).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		});
-	}
-
-	getStars(rating: number): number[] {
-		return Array(Math.floor(rating)).fill(0);
-	}
-
-	getEmptyStars(rating: number): number[] {
-		return Array(5 - Math.floor(rating)).fill(0);
-	}
-
-	decreaseQuantity(): void {
-		if (this.quantity > 1) {
-			this.quantity--;
+	getStatusClass(status?: string): string {
+		switch (status) {
+			case 'active':
+				return 'status--active';
+			case 'maintenance':
+				return 'status--maintenance';
+			case 'completed':
+				return 'status--completed';
+			case 'planned':
+				return 'status--planned';
+			default:
+				return 'status--unknown';
 		}
 	}
 
-	increaseQuantity(): void {
-		if (this.product && this.quantity < this.product.stock) {
-			this.quantity++;
-		}
-	}
-
-	setRating(rating: number): void {
-		this.newReview.rating = rating;
+	getInitials(name: string): string {
+		return name
+			.split(' ')
+			.map((n) => n[0])
+			.join('')
+			.toUpperCase()
+			.slice(0, 2);
 	}
 }

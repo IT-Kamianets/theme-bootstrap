@@ -1,110 +1,98 @@
-<div
-	class="product-card"
-	[class.list-view]="viewMode === 'list'"
-	[class.out-of-stock]="!isInStock()"
+@let p = project();
+@let mode = viewMode();
+@let status = p.status;
+@let hasDemo = !!p.demoUrl;
+@let hasGithub = !!p.githubUrl;
+@let featured = isFeatured();
+
+<div class="project-card"
+	[class.project-card--list]="mode === 'list'"
+	[class.project-card--featured]="featured && mode === 'grid'"
 	(click)="onView()"
-	(mouseenter)="isHovered = true"
-	(mouseleave)="isHovered = false"
+	role="button"
+	tabindex="0"
 >
-	<!-- Image -->
-	<div class="product-image-wrap">
-		<img [src]="product.image" [alt]="product.title" class="product-img" />
+	<!-- Cover Image -->
+	<div class="project-card__image-wrapper">
+		<img
+			[src]="p.image"
+			[alt]="p.title"
+			class="project-card__image"
+			loading="lazy"
+			(error)="onImageError($event)"
+		/>
 
-		<!-- Badges -->
-		<div class="product-badges">
-			@if (product.isNew) {
-				<span class="badge badge-new">New</span>
+		<div class="project-card__badges">
+			@if (status) {
+				<span class="project-badge project-badge--status" [ngClass]="getStatusClass(status)">
+					{{ getStatusLabel(status) }}
+				</span>
 			}
-			@if (hasDiscount()) {
-				<span class="badge badge-discount">-{{ product.discount }}%</span>
-			}
-			@if (!isInStock()) {
-				<span class="badge badge-out">Out of stock</span>
+			@if (p.isNew) {
+				<span class="project-badge project-badge--new">New</span>
 			}
 		</div>
 
-		<!-- Quick actions -->
-		<div class="quick-actions" [class.show]="isHovered">
-			<button
-				type="button"
-				class="btn-quick-action btn-favorite"
-				[class.active]="isFavorite"
-				(click)="toggleFavorite($event)"
-				[title]="isFavorite ? 'Remove from favourites' : 'Add to favourites'"
-			>
-				<i class="bi" [class.bi-heart-fill]="isFavorite" [class.bi-heart]="!isFavorite"></i>
-			</button>
-			<button type="button" class="btn-quick-action btn-quick-view" (click)="onView()" title="Quick view">
-				<i class="bi bi-eye"></i>
-			</button>
-		</div>
+		@if (featured && mode === 'grid') {
+			<div class="project-card__featured-label">
+				<i class="bi bi-stars me-1"></i>Featured
+			</div>
+		}
 	</div>
 
-	<!-- Info -->
-	<div class="product-info p-3 d-flex flex-column flex-grow-1">
-		@if (product.category || product.brand) {
-			<div class="d-flex gap-2 align-items-center mb-1 flex-wrap">
-				@if (product.category) {
-					<span class="small fw-semibold text-uppercase" style="color: var(--c-primary); letter-spacing: 0.5px; font-size: 0.72rem;">{{ product.category }}</span>
+	<!-- Content -->
+	<div class="project-card__content">
+		<div class="project-card__header">
+			@if (p.category) {
+				<span class="project-card__category">{{ p.category }}</span>
+			}
+			<h3 class="project-card__title" [title]="p.title">{{ p.title }}</h3>
+		</div>
+
+		<p class="project-card__description">{{ p.description }}</p>
+
+		<!-- Technologies Stack -->
+		@if (p.technologies && p.technologies.length > 0) {
+			<div class="project-card__tech-stack">
+				@for (tech of p.technologies | slice:0:3; track tech) {
+					<span class="tech-tag">{{ tech }}</span>
 				}
-				@if (product.brand) {
-					<span class="small text-secondary">{{ product.brand }}</span>
+				@if (p.technologies.length > 3) {
+					<span class="tech-tag tech-tag--more">+{{ p.technologies.length - 3 }}</span>
 				}
 			</div>
 		}
 
-		<h5 class="product-title mb-2" [title]="product.title">{{ product.title }}</h5>
-
-		@if (viewMode === 'list') {
-			<p class="small text-secondary mb-2 product-desc">{{ product.description }}</p>
-		}
-
-		@if (product.rating) {
-			<div class="d-flex align-items-center gap-2 mb-2">
-				<div class="d-flex gap-1" style="color: var(--c-secondary); font-size: 0.8rem;">
-					@for (s of getStars(product.rating); track $index) {
-						<i class="bi bi-star-fill"></i>
-					}
-					@for (s of getEmptyStars(product.rating); track $index) {
-						<i class="bi bi-star"></i>
-					}
-				</div>
-				<span class="small fw-semibold" style="color: var(--c-text-secondary);">{{ product.rating }}</span>
-				@if (product.reviews) {
-					<span class="small text-secondary">({{ product.reviews.length }})</span>
+		<!-- Footer actions -->
+		<div class="project-card__footer">
+			<div class="project-card__links">
+				@if (hasGithub) {
+					<a
+						[href]="p.githubUrl"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="project-link"
+						(click)="$event.stopPropagation()"
+						title="Repository"
+					>
+						<i class="bi bi-github"></i>
+					</a>
+				}
+				@if (hasDemo) {
+					<a
+						[href]="p.demoUrl"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="project-link"
+						(click)="$event.stopPropagation()"
+						title="Live Demo"
+					>
+						<i class="bi bi-box-arrow-up-right"></i>
+					</a>
 				}
 			</div>
-		}
-
-		<div class="product-footer mt-auto d-flex flex-column gap-2">
-			<div>
-				@if (!hasDiscount()) {
-					<span class="price-current">${{ product.price.toFixed(2) }}</span>
-				}
-				@if (hasDiscount()) {
-					<span class="price-old me-2">${{ product.price.toFixed(2) }}</span>
-					<span class="price-discounted">${{ getDiscountedPrice().toFixed(2) }}</span>
-				}
-				<div class="stock-status d-flex align-items-center gap-1 mt-1" [ngClass]="getStockClass()">
-					<i class="bi" [ngClass]="{
-						'bi-check-circle': isInStock() && product.stock >= 10,
-						'bi-exclamation-circle': product.stock < 10 && product.stock > 0,
-						'bi-x-circle': !isInStock()
-					}"></i>
-					<span class="small">{{ getStockStatus() }}</span>
-				</div>
-			</div>
-
-			<button
-				type="button"
-				class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
-				(click)="onQuickAdd($event)"
-				[disabled]="!isInStock()"
-			>
-				<i class="bi bi-cart-plus"></i>
-				@if (viewMode === 'list') {
-					<span>Add to cart</span>
-				}
+			<button type="button" class="btn btn-outline-primary btn-sm project-card__action" (click)="$event.stopPropagation(); onView()">
+				Open Project
 			</button>
 		</div>
 	</div>

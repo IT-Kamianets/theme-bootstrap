@@ -1,13 +1,11 @@
-﻿import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
 	ChangeDetectionStrategy,
 	Component,
-	EventEmitter,
-	Input,
-	OnInit,
-	Output,
 	PLATFORM_ID,
 	inject,
+	input,
+	output,
 } from '@angular/core';
 import { Product } from '../../../models/Product.model';
 
@@ -19,96 +17,53 @@ import { Product } from '../../../models/Product.model';
 	templateUrl: './list-item.component.html',
 	styleUrls: ['./list-item.component.css'],
 })
-export class ListItemComponent implements OnInit {
-	@Input() product!: Product;
-	@Input() viewMode: 'grid' | 'list' = 'grid';
+export class ListItemComponent {
+	project = input.required<Product>({ alias: 'product' });
+	viewMode = input<'grid' | 'list'>('grid');
+	isFeatured = input<boolean>(false);
 
-	@Output() viewProduct = new EventEmitter<number>();
-	@Output() quickAddToCart = new EventEmitter<Product>();
+	viewProject = output<number>();
 
-	isFavorite = false;
-	isHovered = false;
-
-	private platformId = inject(PLATFORM_ID);
-
-	isBrowser(): boolean {
-		return isPlatformBrowser(this.platformId);
-	}
-
-	ngOnInit(): void {
-		this.checkFavoriteStatus();
-	}
-
-	checkFavoriteStatus(): void {
-		const favs = this.getFavoritesFromStorage();
-		this.isFavorite = favs.includes(this.product.id);
-	}
-
-	getFavoritesFromStorage(): number[] {
-		if (!this.isBrowser()) return [];
-		const stored = localStorage.getItem('favorites');
-		return stored ? JSON.parse(stored) : [];
-	}
-
-	toggleFavorite(event: Event): void {
-		event.stopPropagation();
-		if (!this.isBrowser()) return;
-
-		let favs = this.getFavoritesFromStorage();
-
-		if (favs.includes(this.product.id)) {
-			favs = favs.filter((id) => id !== this.product.id);
-			this.isFavorite = false;
-		} else {
-			favs.push(this.product.id);
-			this.isFavorite = true;
-		}
-
-		localStorage.setItem('favorites', JSON.stringify(favs));
-	}
+	private _platformId = inject(PLATFORM_ID);
+	_isBrowser = isPlatformBrowser(this._platformId);
 
 	onView(): void {
-		this.viewProduct.emit(this.product.id);
+		this.viewProject.emit(this.project().id);
 	}
 
-	onQuickAdd(event: Event): void {
-		event.stopPropagation();
-		if (this.product.stock > 0) {
-			this.quickAddToCart.emit(this.product);
+	onImageError(event: Event): void {
+		const img = event.target as HTMLImageElement;
+		img.src = 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';
+		img.onerror = null;
+	}
+
+	getStatusClass(status?: string): string {
+		switch (status) {
+			case 'active':
+				return 'status--active';
+			case 'maintenance':
+				return 'status--maintenance';
+			case 'completed':
+				return 'status--completed';
+			case 'planned':
+				return 'status--planned';
+			default:
+				return 'status--unknown';
 		}
 	}
 
-	getStars(rating: number): number[] {
-		return Array(Math.floor(rating)).fill(0);
-	}
-
-	getEmptyStars(rating: number): number[] {
-		return Array(5 - Math.floor(rating)).fill(0);
-	}
-
-	getDiscountedPrice(): number {
-		return this.product.discount
-			? this.product.price * (1 - this.product.discount / 100)
-			: this.product.price;
-	}
-
-	hasDiscount(): boolean {
-		return !!this.product.discount && this.product.discount > 0;
-	}
-
-	isInStock(): boolean {
-		return this.product.stock > 0;
-	}
-
-	getStockStatus(): string {
-		if (this.product.stock === 0) return 'Out of stock';
-		if (this.product.stock < 10) return `Only ${this.product.stock} left`;
-		return 'In stock';
-	}
-
-	getStockClass(): string {
-		if (this.product.stock === 0) return 'out-of-stock';
-		if (this.product.stock < 10) return 'low-stock';
-		return 'in-stock';
+	getStatusLabel(status?: string): string {
+		switch (status) {
+			case 'active':
+				return 'Active';
+			case 'maintenance':
+				return 'Maintenance';
+			case 'completed':
+				return 'Completed';
+			case 'planned':
+				return 'Planned';
+			default:
+				return 'Unknown';
+		}
 	}
 }

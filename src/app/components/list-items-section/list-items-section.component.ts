@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { PRODUCTS } from '../../data/products';
-import { Product } from '../../models/Product.model';
 import { ListItemComponent } from '../../pages/list/list-item/list-item.component';
 
 @Component({
@@ -13,30 +12,24 @@ import { ListItemComponent } from '../../pages/list/list-item/list-item.componen
 	templateUrl: './list-items-section.component.html',
 	styleUrls: ['./list-items-section.component.css'],
 })
-export class ListItemsSectionComponent implements OnInit {
-	products: Product[] = [];
+export class ListItemsSectionComponent {
+	title = input<string>('Our Ecosystem');
+	subtitle = input<string>('Featured Tech Initiatives');
+	maxItems = input<number>(3);
+	showViewAll = input<boolean>(true);
+	viewAllText = input<string>('Explore All Projects');
 
-	@Input() title: string = 'Our products';
-	@Input() subtitle: string = 'Top picks of the week';
-	@Input() maxItems: number = 3;
-	@Input() showViewAll: boolean = true;
-	@Input() viewAllText: string = 'View all';
+	private _router = inject(Router);
 
-	constructor(private router: Router) {}
+	displayProducts = computed(() => {
+		return PRODUCTS.slice(0, this.maxItems());
+	});
 
-	ngOnInit(): void {
-		this.products = PRODUCTS;
-	}
-
-	get displayProducts(): Product[] {
-		return this.products.slice(0, this.maxItems);
-	}
-
-	onViewProduct(productId: number): void {
-		this.router.navigate(['/profile', productId]);
+	onViewProject(productId: number): void {
+		this._router.navigate(['/profile', productId]);
 	}
 
 	navigateToList(): void {
-		this.router.navigate(['/list']);
+		this._router.navigate(['/list']);
 	}
 }

@@ -1,427 +1,228 @@
-@if (product; as p) {
-	<div class="profile-page">
-		<div class="container py-5">
+@let p = project();
+@let isNotFound = notFound();
+
+@if (p) {
+	<div class="project-detail-page">
+		<div class="container project-detail-layout">
+
 			<!-- Breadcrumb -->
-			<nav aria-label="breadcrumb" class="mb-4">
-				<ol class="breadcrumb">
+			<nav class="project-breadcrumb" aria-label="breadcrumb">
+				<ol class="breadcrumb mb-0">
 					<li class="breadcrumb-item">
-						<a (click)="navigateToList()" class="breadcrumb-link">
-							<i class="bi bi-house-door me-1"></i>Products
+						<a class="breadcrumb-link" (click)="navigateToList()" role="button" tabindex="0">
+							<i class="bi bi-layers me-1"></i>Projects
 						</a>
 					</li>
 					@if (p.category) {
-						<li class="breadcrumb-item"><span>{{ p.category }}</span></li>
+						<li class="breadcrumb-item">{{ p.category }}</li>
 					}
 					<li class="breadcrumb-item active" aria-current="page">{{ p.title }}</li>
 				</ol>
 			</nav>
 
-			<!-- Product Hero -->
-			<div class="row g-4 mb-5">
-				<!-- Image Gallery -->
-				<div class="col-lg-6">
-					<div class="image-gallery">
-						<!-- Main Image -->
-						<div class="main-image-container mb-3">
-							<img [src]="selectedImage" [alt]="p.title" class="main-image" />
+			<!-- Hero -->
+			<section class="project-hero">
+				<!-- Gallery -->
+				<div class="project-hero__gallery" #galleryEl>
+					<div class="main-image-wrapper">
+						<img class="main-image" [src]="mainImage()" [alt]="p.title" />
 
-							<!-- Badges -->
-							<div class="image-badges">
-								@if (p.isNew) {
-									<span class="badge badge-new">New</span>
-								}
-								@if (hasDiscount()) {
-									<span class="badge badge-discount">-{{ p.discount }}%</span>
-								}
-								@if (!isInStock()) {
-									<span class="badge badge-out">Out of stock</span>
-								}
-							</div>
-
-							<!-- Navigation Arrows -->
-							@if (p.images && p.images.length > 1) {
-								<button class="gallery-nav gallery-prev" (click)="previousImage()">
-									<i class="bi bi-chevron-left"></i>
-								</button>
-								<button class="gallery-nav gallery-next" (click)="nextImage()">
-									<i class="bi bi-chevron-right"></i>
-								</button>
+						<div class="image-badges">
+							@if (p.status) {
+								<span class="project-badge" [ngClass]="getStatusClass(p.status)">
+									{{ p.status | titlecase }}
+								</span>
 							}
 						</div>
 
-						<!-- Thumbnails -->
 						@if (p.images && p.images.length > 1) {
-							<div class="thumbnails-container">
-								@for (img of p.images; track img; let i = $index) {
-									<div
-										class="thumbnail"
-										[class.active]="selectedImage === img"
-										(click)="selectImage(img, i)"
-									>
-										<img [src]="img" [alt]="p.title" />
-									</div>
+							<button class="gallery-nav gallery-prev" (click)="previousImage()" aria-label="Previous">
+								<i class="bi bi-chevron-left"></i>
+							</button>
+							<button class="gallery-nav gallery-next" (click)="nextImage()" aria-label="Next">
+								<i class="bi bi-chevron-right"></i>
+							</button>
+						}
+					</div>
+
+					@if (p.images && p.images.length > 1) {
+						<div class="thumbnails">
+							@for (img of p.images; track img; let i = $index) {
+								<div
+									class="thumbnail"
+									[class.thumbnail--active]="selectedImageIndex() === i"
+									(click)="selectImage(i)"
+									tabindex="0"
+									role="button"
+									[attr.aria-label]="'Screenshot ' + (i + 1)"
+								>
+									<img [src]="img" [alt]="p.title + ' ' + (i + 1)" />
+								</div>
+							}
+						</div>
+					}
+				</div>
+
+				<!-- Info -->
+				<div class="project-hero__info">
+					@if (p.category) {
+						<span class="project-eyebrow">{{ p.category }}</span>
+					}
+					<h1 class="project-title">{{ p.title }}</h1>
+					<p class="project-short-desc">{{ p.description }}</p>
+
+					@if (p.technologies && p.technologies.length > 0) {
+						<div class="tech-stack-section">
+							<span class="tech-stack-label">Built with</span>
+							<div class="tech-tags">
+								@for (tech of p.technologies; track tech) {
+									<span class="tech-tag">{{ tech }}</span>
 								}
 							</div>
+						</div>
+					}
+
+					<div class="project-actions">
+						@if (p.githubUrl) {
+							<a
+								[href]="p.githubUrl"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn btn-outline-secondary btn-action"
+							>
+								<i class="bi bi-github"></i>Source Code
+							</a>
+						}
+						@if (p.demoUrl) {
+							<a
+								[href]="p.demoUrl"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn btn-primary btn-action"
+							>
+								<i class="bi bi-box-arrow-up-right"></i>Live Demo
+							</a>
 						}
 					</div>
 				</div>
+			</section>
 
-				<!-- Product Details -->
-				<div class="col-lg-6">
-					<!-- Brand & SKU -->
-					@if (p.brand || p.sku) {
-						<div class="d-flex gap-3 align-items-center flex-wrap mb-2">
-							@if (p.brand) {
-								<span class="small fw-semibold text-uppercase" style="color: var(--c-primary); letter-spacing: 1px;">{{ p.brand }}</span>
-							}
-							@if (p.sku) {
-								<span class="small text-secondary">SKU: {{ p.sku }}</span>
-							}
-						</div>
-					}
-
-					<!-- Title -->
-					<h1 class="fw-bold mb-3" style="color: var(--c-text-secondary); font-size: clamp(1.5rem, 4vw, 2.5rem); line-height: 1.2;">{{ p.title }}</h1>
-
-					<!-- Rating & Reviews -->
-					@if (p.rating) {
-						<div class="d-flex align-items-center gap-2 flex-wrap mb-3">
-							<div class="d-flex gap-1" style="color: var(--c-secondary);">
-								@for (s of getStars(p.rating); track $index) {
-									<i class="bi bi-star-fill"></i>
-								}
-								@for (s of getEmptyStars(p.rating); track $index) {
-									<i class="bi bi-star"></i>
-								}
-							</div>
-							<span class="fw-semibold small" style="color: var(--c-text-secondary);">{{ p.rating }}</span>
-							@if (p.reviews) {
-								<span class="text-secondary small">({{ p.reviews.length }} reviews)</span>
-							}
-						</div>
-					}
-
-					<!-- Price Section -->
-					<div class="border-top border-bottom py-4 my-3">
-						<div class="mb-2">
-							@if (!hasDiscount()) {
-								<span class="fw-bold" style="font-size: clamp(2rem, 6vw, 3rem); color: var(--c-primary); line-height: 1;">${{ p.price.toFixed(2) }}</span>
-							}
-							@if (hasDiscount()) {
-								<div class="d-flex align-items-center gap-3 flex-wrap">
-									<span class="text-secondary text-decoration-line-through" style="font-size: clamp(1.1rem, 3vw, 1.5rem);">${{ p.price.toFixed(2) }}</span>
-									<span class="fw-bold" style="font-size: clamp(2rem, 6vw, 3rem); color: var(--c-secondary); line-height: 1;">${{ getDiscountedPrice().toFixed(2) }}</span>
-								</div>
-							}
-						</div>
-
-						<!-- Stock Status -->
-						<div class="stock-status d-inline-flex align-items-center gap-2 px-3 py-1 rounded small fw-medium" [ngClass]="getStockClass()">
-							<i class="bi" [ngClass]="{
-								'bi-check-circle-fill': isInStock() && p.stock >= 10,
-								'bi-exclamation-circle-fill': p.stock < 10 && p.stock > 0,
-								'bi-x-circle-fill': !isInStock()
-							}"></i>
-							<span>{{ getStockStatus() }}</span>
-						</div>
-					</div>
-
-					<!-- Quick Specs -->
-					@if (p.specifications) {
-						<div class="d-flex flex-column gap-2 mb-4">
-							@for (spec of p.specifications | keyvalue | slice: 0 : 3; track spec.key) {
-								<div class="d-flex align-items-start gap-2 small">
-									<i class="bi bi-check2 mt-1 flex-shrink-0" style="color: var(--c-primary);"></i>
-									<span><strong>{{ spec.key }}:</strong> {{ spec.value }}</span>
-								</div>
-							}
-						</div>
-					}
-
-					<!-- Quantity Selector -->
-					@if (isInStock()) {
-						<div class="d-flex align-items-center gap-3 mb-4">
-							<label class="fw-semibold mb-0" style="color: var(--c-text-secondary);">Quantity:</label>
-							<div class="quantity-controls">
-								<button class="btn-quantity" (click)="decreaseQuantity()" [disabled]="quantity <= 1">
-									<i class="bi bi-dash"></i>
-								</button>
-								<input type="number" [(ngModel)]="quantity" class="quantity-input" min="1" [max]="p.stock" readonly />
-								<button class="btn-quantity" (click)="increaseQuantity()" [disabled]="quantity >= p.stock">
-									<i class="bi bi-plus"></i>
-								</button>
-							</div>
-						</div>
-					}
-
-					<!-- Action Buttons -->
-					<div class="d-flex gap-3 align-items-center flex-wrap mb-4">
-						<button class="btn btn-primary btn-lg flex-grow-1" (click)="addToCart()" [disabled]="!isInStock()">
-							<i class="bi bi-cart-plus me-2"></i>
-							{{ isInStock() ? 'Add to cart' : 'Out of stock' }}
-						</button>
-						<button class="btn-icon" (click)="toggleFavorite()" [class.active]="isFavorite">
-							<i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
-						</button>
-						<button class="btn-icon" (click)="shareProduct()">
-							<i class="bi bi-share"></i>
-						</button>
-					</div>
-
-					<!-- Additional Info -->
-					<div class="d-flex flex-column gap-3 border-top pt-4">
-						<div class="d-flex align-items-start gap-3">
-							<i class="bi bi-truck fs-4 flex-shrink-0" style="color: var(--c-primary);"></i>
-							<div>
-								<strong style="color: var(--c-text-secondary);">Free shipping</strong>
-								<div class="text-secondary small">On orders over $50</div>
-							</div>
-						</div>
-						<div class="d-flex align-items-start gap-3">
-							<i class="bi bi-arrow-counterclockwise fs-4 flex-shrink-0" style="color: var(--c-primary);"></i>
-							<div>
-								<strong style="color: var(--c-text-secondary);">30-day returns</strong>
-								<div class="text-secondary small">No questions asked</div>
-							</div>
-						</div>
-						<div class="d-flex align-items-start gap-3">
-							<i class="bi bi-shield-check fs-4 flex-shrink-0" style="color: var(--c-primary);"></i>
-							<div>
-								<strong style="color: var(--c-text-secondary);">2-year warranty</strong>
-								<div class="text-secondary small">Official manufacturer warranty</div>
-							</div>
-						</div>
+			<!-- Content Grid -->
+			<div class="project-content-grid">
+				<!-- Main: About -->
+				<div>
+					<div class="detail-card">
+						<h2 class="detail-card__title">About the Project</h2>
+						<p class="project-full-desc">{{ p.fullDescription || p.description }}</p>
 					</div>
 				</div>
-			</div>
 
-			<!-- Tabs -->
-			<div class="card border rounded-4 mb-5">
-				<div class="card-header bg-transparent border-bottom px-4">
-					<ul class="nav nav-tabs card-header-tabs border-0 gap-2">
-						<li class="nav-item">
-							<a class="nav-link" [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">
-								<i class="bi bi-info-circle me-2"></i>Description
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" [class.active]="activeTab === 'specs'" (click)="activeTab = 'specs'">
-								<i class="bi bi-list-check me-2"></i>Specifications
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
-								<i class="bi bi-star me-2"></i>Reviews
-								@if (p.reviews) {
-									<span class="badge rounded-pill ms-1" style="background: var(--c-primary); font-size: 0.72rem;">{{ p.reviews.length }}</span>
-								}
-							</a>
-						</li>
-					</ul>
-				</div>
+				<!-- Sidebar -->
+				<div class="d-flex flex-column gap-4">
 
-				<div class="card-body p-4 p-lg-5">
-					<!-- Details Tab -->
-					@if (activeTab === 'details') {
-						<div>
-							<h5 class="fw-semibold mb-4" style="color: var(--c-text-secondary);">Detailed description</h5>
-							<p class="mb-4" style="color: var(--c-text-primary); line-height: 1.8;">{{ p.description }}</p>
-
-							@if (p.brand) {
-								<div class="p-4 rounded-3 border-start border-3" style="background: var(--c-bg-primary); border-color: var(--c-primary) !important;">
-									<h6 class="fw-semibold mb-2" style="color: var(--c-text-secondary);">About {{ p.brand }}</h6>
-									<p class="mb-0" style="color: var(--c-text-primary); line-height: 1.6;">
-										{{ p.brand }} is a leading manufacturer of quality products with years of experience in the market. The company is known for its attention to detail and innovative solutions.
-									</p>
-								</div>
-							}
-						</div>
-					}
-
-					<!-- Specifications Tab -->
-					@if (activeTab === 'specs') {
-						<div>
-							<h5 class="fw-semibold mb-4" style="color: var(--c-text-secondary);">Technical specifications</h5>
-							@if (p.specifications) {
-								<table class="table specs-table">
-									<tbody>
-										@for (spec of p.specifications | keyvalue; track spec.key) {
-											<tr>
-												<td class="fw-semibold" style="color: var(--c-text-secondary); width: 40%;">{{ spec.key }}</td>
-												<td style="color: var(--c-text-primary);">{{ spec.value }}</td>
-											</tr>
+					@if (p.team && p.team.length > 0) {
+						<div class="detail-card">
+							<h3 class="detail-card__title">Contributors</h3>
+							<div class="team-list">
+								@for (member of p.team; track member.name) {
+									<div class="team-member">
+										<div class="team-member__avatar" [attr.data-initials]="getInitials(member.name)"></div>
+										<div class="team-member__info">
+											<span class="team-member__name">{{ member.name }}</span>
+											<span class="team-member__role">{{ member.role }}</span>
+										</div>
+										@if (member.githubUrl) {
+											<a
+												[href]="member.githubUrl"
+												target="_blank"
+												rel="noopener noreferrer"
+												class="team-member__github"
+												title="GitHub profile"
+												(click)="$event.stopPropagation()"
+											><i class="bi bi-github"></i></a>
 										}
-										<tr>
-											<td class="fw-semibold" style="color: var(--c-text-secondary); width: 40%;">SKU</td>
-											<td style="color: var(--c-text-primary);">{{ p.sku || 'N/A' }}</td>
-										</tr>
-										<tr>
-											<td class="fw-semibold" style="color: var(--c-text-secondary); width: 40%;">Brand</td>
-											<td style="color: var(--c-text-primary);">{{ p.brand || 'N/A' }}</td>
-										</tr>
-										<tr>
-											<td class="fw-semibold" style="color: var(--c-text-secondary); width: 40%;">Availability</td>
-											<td>
-												<span class="stock-status d-inline-flex align-items-center gap-1 px-2 py-1 rounded small fw-medium" [ngClass]="getStockClass()">
-													{{ getStockStatus() }}
-												</span>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							}
-						</div>
-					}
-
-					<!-- Reviews Tab -->
-					@if (activeTab === 'reviews') {
-						<div>
-							<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-								<h5 class="fw-semibold mb-0" style="color: var(--c-text-secondary);">Customer reviews</h5>
-								<button class="btn btn-outline-primary btn-sm" (click)="toggleReviewForm()">
-									<i class="bi bi-plus-circle me-2"></i>Add review
-								</button>
+									</div>
+								}
 							</div>
-
-							<!-- Review Form -->
-							@if (showReviewForm) {
-								<div class="p-4 rounded-3 border mb-4" style="background: var(--c-bg-primary);">
-									<h6 class="fw-semibold mb-4" style="color: var(--c-text-secondary);">Your review</h6>
-									<div class="mb-3">
-										<label class="form-label fw-medium">Name</label>
-										<input type="text" class="form-control" [(ngModel)]="newReview.author" placeholder="Your name" />
-									</div>
-									<div class="mb-3">
-										<label class="form-label fw-medium">Rating</label>
-										<div class="d-flex gap-2" style="font-size: 1.5rem; color: var(--c-secondary);">
-											@for (star of [1, 2, 3, 4, 5]; track star) {
-												<i class="bi" [ngClass]="star <= newReview.rating ? 'bi-star-fill' : 'bi-star'" (click)="setRating(star)" style="cursor: pointer;"></i>
-											}
-										</div>
-									</div>
-									<div class="mb-3">
-										<label class="form-label fw-medium">Comment</label>
-										<textarea class="form-control" [(ngModel)]="newReview.comment" rows="4" placeholder="Tell us about your experience with this product"></textarea>
-									</div>
-									<div class="d-flex gap-3">
-										<button class="btn btn-primary" (click)="submitReview()">Publish</button>
-										<button class="btn btn-outline-secondary" (click)="toggleReviewForm()">Cancel</button>
-									</div>
-								</div>
-							}
-
-							<!-- Reviews List -->
-							@if (p.reviews && p.reviews.length > 0) {
-								<div class="d-flex flex-column gap-3">
-									@for (review of p.reviews; track review.author) {
-										<div class="p-4 border rounded-3" style="background: var(--c-bg-primary);">
-											<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
-												<div class="d-flex align-items-center gap-3">
-													<div class="author-avatar">{{ review.author.charAt(0).toUpperCase() }}</div>
-													<div>
-														<strong style="color: var(--c-text-secondary);">{{ review.author }}</strong>
-														@if (review.verified) {
-															<div class="small d-flex align-items-center gap-1" style="color: var(--c-primary);">
-																<i class="bi bi-patch-check-fill"></i> Verified purchase
-															</div>
-														}
-													</div>
-												</div>
-												<div class="text-end">
-													<div class="d-flex gap-1 justify-content-end mb-1" style="color: var(--c-secondary); font-size: 0.9rem;">
-														@for (s of getStars(review.rating); track $index) {
-															<i class="bi bi-star-fill"></i>
-														}
-														@for (s of getEmptyStars(review.rating); track $index) {
-															<i class="bi bi-star"></i>
-														}
-													</div>
-													<span class="text-secondary small">{{ formatDate(review.date) }}</span>
-												</div>
-											</div>
-											<p class="mb-0" style="color: var(--c-text-primary); line-height: 1.6;">{{ review.comment }}</p>
-										</div>
-									}
-								</div>
-							}
-
-							@if (!p.reviews || p.reviews.length === 0) {
-								<div class="text-center py-5" style="color: var(--c-text-muted);">
-									<i class="bi bi-chat-left-text display-4 d-block mb-3 opacity-50"></i>
-									<p class="mb-0">No reviews yet. Be the first!</p>
-								</div>
-							}
 						</div>
 					}
+
+					<div class="detail-card">
+						<h3 class="detail-card__title">Project Info</h3>
+						<ul class="meta-list">
+							<li class="meta-item">
+								<span class="meta-label">Category</span>
+								<span class="meta-value">{{ p.category || '—' }}</span>
+							</li>
+							<li class="meta-item">
+								<span class="meta-label">Status</span>
+								<span class="meta-value">
+									<span class="status-dot" [ngClass]="getStatusClass(p.status)"></span>
+									{{ (p.status | titlecase) || '—' }}
+								</span>
+							</li>
+							@if (p.technologies && p.technologies.length > 0) {
+								<li class="meta-item">
+									<span class="meta-label">Stack</span>
+									<span class="meta-value">{{ p.technologies.length }} technologies</span>
+								</li>
+							}
+						</ul>
+					</div>
 				</div>
 			</div>
 
-			<!-- Related Products -->
-			@if (relatedProducts.length > 0) {
-				<div class="mb-5">
-					<h3 class="fw-bold mb-4 d-flex align-items-center" style="color: var(--c-text-secondary);">
-						<i class="bi bi-bag-check me-2"></i>Related products
-					</h3>
+			<!-- Related -->
+			@let related = relatedProjects();
+			@if (related.length > 0) {
+				<section class="related-projects">
+					<h2 class="related-title">Similar Projects</h2>
 					<div class="row g-4">
-						@for (related of relatedProducts; track related.id) {
-							<div class="col-md-6 col-lg-3">
-								<div class="card border rounded-4 h-100 related-product-card" (click)="navigateToProduct(related.id)">
-									<div class="related-product-image">
-										<img [src]="related.image" [alt]="related.title" />
-										<div class="image-badges">
-											@if (related.isNew) {
-												<span class="badge badge-new">New</span>
-											}
-											@if (related.discount) {
-												<span class="badge badge-discount">-{{ related.discount }}%</span>
-											}
-										</div>
+						@for (rel of related; track rel.id) {
+							<div class="col-12 col-md-6 col-lg-4">
+								<div class="related-card" (click)="navigateToProject(rel.id)" tabindex="0" role="button">
+									<div class="related-card__image-wrap">
+										<img class="related-card__img" [src]="rel.image" [alt]="rel.title" loading="lazy" />
 									</div>
-									<div class="card-body p-3">
-										<h6 class="fw-semibold mb-2 related-product-title" style="color: var(--c-text-secondary);">{{ related.title }}</h6>
-										<div class="d-flex justify-content-between align-items-center">
-											<span class="fw-bold" style="color: var(--c-primary); font-size: 1.25rem;">${{ related.price.toFixed(2) }}</span>
-											@if (related.rating) {
-												<div class="d-flex align-items-center gap-1 small" style="color: var(--c-secondary);">
-													<i class="bi bi-star-fill"></i>
-													<span>{{ related.rating }}</span>
-												</div>
-											}
-										</div>
+									<div class="related-card__body">
+										<h4 class="related-card__title">{{ rel.title }}</h4>
+										<p class="related-card__desc">{{ rel.description }}</p>
+										@if (rel.technologies) {
+											<div class="related-card__techs">
+												@for (t of rel.technologies | slice:0:3; track t) {
+													<span class="related-tag">{{ t }}</span>
+												}
+											</div>
+										}
 									</div>
 								</div>
 							</div>
 						}
 					</div>
-				</div>
+				</section>
 			}
 
-			<!-- Back Button -->
-			<div class="text-center mt-5">
-				<button class="btn btn-outline-primary btn-lg" (click)="navigateToList()">
-					<i class="bi bi-arrow-left me-2"></i>Back to catalogue
+			<!-- Back -->
+			<div class="project-back-action">
+				<button class="btn btn-outline-secondary btn-action" (click)="navigateToList()">
+					<i class="bi bi-arrow-left"></i>Back to Projects
 				</button>
 			</div>
 		</div>
 	</div>
-}
-
-<!-- Loading State -->
-@if (!product && !notFound) {
-	<div class="container py-5 text-center">
-		<div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
-		<p style="color: var(--c-text-primary);">Loading product...</p>
-	</div>
-}
-
-<!-- Not Found State -->
-@if (notFound) {
-	<div class="container py-5 text-center">
-		<i class="bi bi-exclamation-circle display-1 d-block mb-3" style="color: var(--c-text-muted); opacity: 0.5;"></i>
-		<h2 class="fw-bold mb-2" style="color: var(--c-text-secondary);">Product not found</h2>
-		<p class="mb-4" style="color: var(--c-text-muted);">The product you are looking for does not exist or has been removed.</p>
-		<button class="btn btn-primary btn-lg" (click)="navigateToList()">
-			<i class="bi bi-grid me-2"></i>Browse catalogue
+} @else if (isNotFound) {
+	<div class="container py-5 text-center" style="margin-top: 80px">
+		<i class="bi bi-hdd-network display-1 d-block mb-4" style="color: var(--c-text-muted); opacity: 0.4"></i>
+		<h2 class="fw-bold mb-2" style="color: var(--c-text-secondary)">Project not found</h2>
+		<p class="mb-5" style="color: var(--c-text-muted)">This initiative doesn't exist or has been moved.</p>
+		<button class="btn btn-primary btn-lg" style="border-radius: var(--radius-btn); padding: var(--sp-3) var(--sp-7)" (click)="navigateToList()">
+			<i class="bi bi-layers me-2"></i>Browse Projects
 		</button>
+	</div>
+} @else {
+	<div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh">
+		<div class="spinner-border" style="color: var(--c-primary)" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
 	</div>
 }
